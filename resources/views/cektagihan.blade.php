@@ -17,9 +17,9 @@
     </div>
     <!-- Menu -->
     <nav class="flex flex-col items-center space-y-10 flex-1">
-        <a href="#" class="flex flex-col items-center group">
+        <a href="/dashboard" class="flex flex-col items-center group">
             <i class="fas fa-home text-white text-3xl group-hover:text-[#92CEE6]"></i>
-            <span class="text-xs text-white mt-1">Beranda</span>
+            <span class="text-xs text-white mt-1">Dashboard</span>
         </a>
         <a href="#" class="flex flex-col items-center group">
             <i class="fas fa-folder text-white text-3xl group-hover:text-[#92CEE6]"></i>
