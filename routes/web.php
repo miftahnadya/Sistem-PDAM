@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CekTagihanController;
+use App\Http\Controllers\DashboardMasyarakatController;
 
 // Halaman utama
 Route::get('/', function () {
@@ -26,3 +27,8 @@ Route::get('/pengaduanpelanggan', [PengaduanPelangganController::class, 'index']
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
+
+
+Route::get('/dashboardmasyarakat', [DashboardMasyarakatController::class, 'index'])
+    ->middleware('auth')
+    ->name('dashboardmasyarakat');

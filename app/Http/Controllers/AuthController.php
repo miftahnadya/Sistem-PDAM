@@ -10,7 +10,12 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect()->route('cektagihan');
+            // Redirect sesuai role
+            if (Auth::user()->role === 'admin') {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('dashboardmasyarakat');
+            }
         }
         return view('login');
     }
@@ -29,7 +34,13 @@ class AuthController extends Controller
         if ($user) {
             Auth::login($user);
             $request->session()->regenerate();
-            return redirect()->route('cektagihan');
+
+            // Redirect sesuai role
+            if ($user->role === 'admin') {
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->route('dashboardmasyarakat');
+            }
         }
 
         return back()->withErrors([

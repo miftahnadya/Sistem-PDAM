@@ -10,16 +10,19 @@ class UserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'nama_pelanggan' => 'Sulaiman',
+                'nama_pelanggan' => 'Admin',
                 'id_pelanggan' => '12345',
+                'role' => 'admin',
             ],
             [
                 'nama_pelanggan' => 'Nadya',
                 'id_pelanggan' => '67890',
+                'role' => 'user',
             ],
             [
                 'nama_pelanggan' => 'Budi',
                 'id_pelanggan' => '54321',
+                'role' => 'user',
             ],
         ]);
     }

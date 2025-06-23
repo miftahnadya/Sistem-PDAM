@@ -68,8 +68,8 @@
                     <tbody>
                         <tr class="bg-white text-center text-sm">
                             <td class="px-4 py-2 border border-gray-400">04919</td>
-                            <td class="px-4 py-2 border border-gray-400">Sulaiman</td>
-                            <td class="px-4 py-2 border border-gray-400">11-03-2025</td>
+                            <td class="px-4 py-2 border border-gray-400">Nadya</td>
+                            <td class="px-4 py-2 border border-gray-400">Januari 2025</td>
                             <td class="px-4 py-2 border border-gray-400">244.226</td>
                             <td class="px-4 py-2 border border-gray-400">2.500</td>
                             <td class="px-4 py-2 border border-gray-400">0</td>

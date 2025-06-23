@@ -11,7 +11,8 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('nama_pelanggan')->unique();
             $table->string('id_pelanggan');
-            $table->rememberToken(); // untuk remember_token
+            $table->string('role')->default('user');
+            $table->rememberToken(); 
             $table->timestamps();
         });
     }
