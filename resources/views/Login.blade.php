@@ -1,46 +1,44 @@
-
+<!-- filepath: resources/views/login.blade.php -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Tagihan PDAM</title>
+    <title>Login - PDAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="min-h-screen bg-gradient-to-r from-[#6bb6d6] to-[#10283a] flex items-center justify-center">
-    <div class="flex w-full h-screen">
-        <!-- Sidebar -->
-        <div class="bg-[#10283a] w-16 flex flex-col items-center py-8 space-y-6">
-            <a href="{{ url('/') }}" class="text-white text-2xl mb-4"><i class="fas fa-home"></i></a>
-            <a href="#" class="text-white text-2xl"><i class="fas fa-file-alt"></i></a>
-            <a href="#" class="text-white text-2xl"><i class="fas fa-user"></i></a>
+<body class="min-h-screen w-full">
+    <div class="relative min-h-screen w-full flex items-center justify-center">
+        <div class="absolute inset-0">
+            <img src="{{ asset('images/air 1.jpeg') }}" alt="background" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-[#003366]/30"></div>
         </div>
-        <!-- Ilustrasi dan Form -->
-        <div class="flex flex-1 items-center justify-center">
-            <!-- Ilustrasi -->
-            <div class="hidden md:flex flex-1 justify-center">
-                <img src="{{ asset('images/ilustrasi-pdam.png') }}" alt="Ilustrasi PDAM" class="max-h-[350px]">
-            </div>
-            <!-- Form Cek Tagihan -->
-            <div class="flex-1 flex justify-center">
-                <div class="bg-[#10283a]/60 border-2 border-gray-300 rounded-lg shadow-lg p-8 w-[340px] flex flex-col items-center backdrop-blur-md">
-                    <div class="bg-[#6bb6d6] rounded-full w-16 h-16 flex items-center justify-center mb-6">
-                        <i class="fas fa-user text-3xl text-white"></i>
-                    </div>
-                    <form action="{{ route('cek-tagihan') }}" method="POST" class="w-full flex flex-col gap-6">
-                        @csrf
-                        <div>
-                            <label class="block text-white text-sm mb-1">ID Pelanggan</label>
-                            <input type="text" name="id_pelanggan" class="w-full bg-transparent border-b-2 border-gray-300 text-white focus:outline-none focus:border-[#6bb6d6] py-1" required>
-                        </div>
-                        <div>
-                            <label class="block text-white text-sm mb-1">Nama Pelanggan</label>
-                            <input type="text" name="nama_pelanggan" class="w-full bg-transparent border-b-2 border-gray-300 text-white focus:outline-none focus:border-[#6bb6d6] py-1" required>
-                        </div>
-                        <button type="submit" class="mt-2 w-full bg-[#6bb6d6] text-[#10283a] font-bold py-2 rounded-lg hover:bg-[#5aa3c2] transition">Cek</button>
-                    </form>
+        <div class="relative z-10 w-full max-w-md px-8 py-10 rounded-2xl bg-white/10 backdrop-blur-md shadow-lg flex flex-col">
+            <div class="flex items-center mb-8">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center mr-2">
+                    <i class="fas fa-building text-[#003366]"></i>
                 </div>
+                <span class="text-white font-semibold text-lg">PDAM</span>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-8">Login ke Akun Anda</h2>
+            <form method="POST" action="{{ route('login.process') }}" class="bg-white p-8 rounded shadow w-96">
+                @csrf
+                <h2 class="text-2xl font-bold mb-6 text-center">Login PDAM</h2>
+                <div class="mb-4">
+                    <label for="nama_pelanggan" class="block text-gray-700 mb-1">Nama Pelanggan</label>
+                    <input type="text" name="nama_pelanggan" id="nama_pelanggan" placeholder="Nama Pelanggan" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300" value="{{ old('nama_pelanggan') }}">
+                </div>
+                <div class="mb-4">
+                    <label for="id_pelanggan" class="block text-gray-700 mb-1">ID Pelanggan</label>
+                    <input type="password" name="id_pelanggan" id="id_pelanggan" placeholder="ID Pelanggan" required class="w-full px-3 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">Login</button>
+                @if($errors->any())
+                    <div class="text-red-500 mt-4 text-center">{{ $errors->first() }}</div>
+                @endif
+            </form>
+            <div class="mt-10 text-white/70 text-xs text-center">
+                © {{ date('Y') }}, PDAM
             </div>
         </div>
     </div>

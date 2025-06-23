@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,30 +11,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .bg-pdam {
-            background-color:rgb(90, 143, 211) !important;
+            background-color: #508C9B !important;
         }
         .text-pdam {
             color: #0097a7 !important;
         }
         .ring-pdam {
             --tw-ring-color: #0097a7 !important;
-
+        }
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 <body class="font-sans antialiased bg-[#eaf6fa]">
     <!-- Navbar -->
-    <nav class="sticky top-0 left-0 w-full z-50 bg-pdam shadow-lg">
+    <nav class="sticky top-0 left-0 w-full z-50 shadow-lg" style="background: linear-gradient(90deg, #92CEE6 0%,rgb(9, 21, 36) 100%);">
         <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
             <img src="{{ asset('images/logo_pdam.png') }}" alt="Logo PDAM" class="h-14">
             <ul class="flex flex-row space-x-10 font-medium text-lg">
-                <li><a href="{{ url('/') }}" class="text-white font-semibold hover:text-blue-200">Beranda</a></li>
-                <li><a href="#tentang" class="text-white hover:text-blue-200">Tentang Kami</a></li>
-                <li><a href="#artikel" class="text-white hover:text-blue-200">Artikel</a></li>
-                <li><a href="#sejarah" class="text-white hover:text-blue-200">Sejarah</a></li>
-                <li><a href="#struktur-organisasi" class="text-white hover:text-blue-200">Organisasi</a></li>
+                <li><a href="{{ url('/') }}" class="text-white hover:text-blue-200" style="font-family: 'Poppins',">Beranda</a></li>
+                <li><a href="#tentang" class="text-white hover:text-blue-200" style="font-family: 'Poppins',">Tentang Kami</a></li>
+                <li><a href="#artikel" class="text-white hover:text-blue-200" style="font-family: 'Poppins',">Artikel</a></li>
+                <li><a href="#sejarah" class="text-white hover:text-blue-200" style="font-family: 'Poppins',">Sejarah</a></li>
+                <li><a href="#struktur-organisasi" class="text-white hover:text-blue-200" style="font-family: 'Poppins',">Organisasi</a></li>
             </ul>
-            <a href="{{ url('/login') }}" class="bg-white text-[#0097a7] font-bold px-6 py-1 rounded-lg hover:bg-blue-100 transition">LOGIN</a>
+            <a href="/login" class="bg-[#92CEE6] text-[#0E2148] font-bold px-6 py-1 rounded-lg hover:bg-blue-100 transition">LOGIN</a>
         </div>
     </nav>
 
@@ -46,60 +49,62 @@
         <div class="relative z-20 flex flex-col items-center justify-center h-full pt-24">
             <h1 class="text-white text-3xl md:text-5xl font-bold drop-shadow-lg text-center mb-2 pt-10">PDAM TIRTA TAMIANG</h1>
             <p class="text-white text-lg md:text-2xl mb-8 drop-shadow text-center">Perusahaan Daerah air minum Aceh Tamiang</p>
-            <div class="flex gap-8 mt-2 mb-12"> <!-- mb-12 agar lebih jauh dari bawah -->
-                <a href="#cek-tagihan" class="flex flex-col items-center group">
-                    <div class="bg-gradient-to-b from-[#0097a7] to-[#003f4c] rounded-lg shadow-lg w-36 h-36 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+            <div class="flex gap-8 mt-2 mb-12">
+                <a href="cektagihan" class="flex flex-col items-center group">
+                    <div class="bg-gradient-to-b from-[#92CEE6] to-[#0F2538] rounded-lg shadow-lg w-36 h-36 flex items-center justify-center mb-2 group-hover:scale-105 transition">
                         <i class="fas fa-search-dollar text-white text-4xl"></i>
                     </div>
                     <span class="text-white font-semibold text-base">Cek Tagihan</span>
                 </a>
-                <a href="#pengaduan" class="flex flex-col items-center group">
-                    <div class="bg-gradient-to-b from-[#0097a7] to-[#003f4c] rounded-lg shadow-lg w-36 h-36 flex items-center justify-center mb-2 group-hover:scale-105 transition">
+                <a href="pengaduanpelanggan" class="flex flex-col items-center group">
+                    <div class="bg-gradient-to-b from-[#92CEE6] to-[#0F2538] rounded-lg shadow-lg w-36 h-36 flex items-center justify-center mb-2 group-hover:scale-105 transition">
                         <i class="fas fa-comments text-white text-4xl"></i>
                     </div>
                     <span class="text-white font-semibold text-base">Pengaduan pelanggan</span>
                 </a>
             </div>
             <!-- Peraturan Daerah Card -->
-            <div class="w-[90%] max-w-3xl mx-auto bg-[#b2e0f7] rounded-xl shadow-lg flex flex-col md:flex-row items-center p-6 md:p-8 mt-8"> <!-- mt-8 agar lebih jauh dari atas -->
-                <div class="flex-1 mb-6 md:mb-0 md:mr-8">
-                    <h2 class="text-2xl font-bold text-[#007c91] mb-2">Peraturan Daerah</h2>
-                    <p class="text-[#1e355e] text-base md:text-lg">
-                        Sesuai dengan Qanun Kabupaten Aceh Tamiang Nomor 1 Tahun 2019 tentang perubahan nama PDAM Tirta Tamiang menjadi Perumda Air Minum Tirta Tamiang serta pengaturan organisasi, modal, tugas, dan fungsi perusahaan.
-                    </p>
+                        <div class="w-[90%] max-w-3xl mx-auto bg-[#b2e0f7] rounded-xl shadow-lg flex flex-col md:flex-row items-center p-6 md:p-8 mt-8">
+                            <div class="flex-1 mb-6 md:mb-0 md:mr-8">
+                                <h2 class="text-2xl font-bold text-[#007c91] mb-2">Peraturan Daerah</h2>
+                                <p class="text-[#1e355e] text-base md:text-lg">
+                                    Sesuai dengan Qanun Kabupaten Aceh Tamiang Nomor 1 Tahun 2019 tentang perubahan nama PDAM Tirta Tamiang menjadi Perumda Air Minum Tirta Tamiang serta pengaturan organisasi, modal, tugas, dan fungsi perusahaan.
+                                </p>
+                            </div>
+                            <div class="flex-shrink-0 flex justify-center">
+                                <img src="{{ asset('images/grafik.png') }}" alt="Ilustrasi Grafik" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="flex-shrink-0 flex justify-center">
-                    <img src="{{ asset('images/grafik.png') }}" alt="Ilustrasi Grafik" class="w-32 h-32 md:w-40 md:h-40 object-contain drop-shadow-xl">
-                </div>
-            </div>
-        </div>
-    </div>
-    </div>
 
-    <!-- Section berikutnya -->
-    <div class="w-full bg-[#eaf6fa] pt-16 pb-8">
-        <!-- VISI & MISI -->
-        <section class="w-full flex flex-col md:flex-row gap-10 mb-16">
-            <div class="flex-1 bg-[#1e355e] p-8 flex flex-col items-start shadow-md rounded-xl">
-                <span class="text-white text-lg font-bold px-4 py-2 rounded bg-[#1e355e] mb-4 shadow">VISI</span>
-                <ol class="list-decimal ml-6 text-white/90 text-base space-y-2">
-                    <li>Menyediakan air minum yang aman, berkualitas, dan cukup untuk seluruh lapisan masyarakat.</li>
-                    <li>Melaksanakan kinerja perusahaan melalui pengelolaan yang efisien, transparan, dan akuntabel.</li>
-                    <li>Mengoptimalkan pemanfaatan teknologi untuk memberikan layanan yang lebih cepat dan tepat.</li>
-                </ol>
-            </div>
-            <div class="flex-1 bg-[#b2e0f7] p-8 flex flex-col items-start shadow-md rounded-xl">
-                <span class="text-[#1e355e] text-lg font-bold px-4 py-2 rounded bg-[#b2e0f7] mb-4 shadow">MISI</span>
-                <ol class="list-decimal ml-6 text-[#1e355e] text-base space-y-2">
-                    <li>Menyediakan air minum yang aman, berkualitas, dan cukup untuk seluruh lapisan masyarakat.</li>
-                    <li>Meningkatkan kinerja perusahaan melalui pengelolaan yang efisien, transparan, dan akuntabel.</li>
-                    <li>Mengoptimalkan pemanfaatan teknologi untuk memberikan layanan yang lebih cepat dan tepat.</li>
-                </ol>
-            </div>
-        </section>
+                <!-- Spacer antara Peraturan Daerah dan Visi Misi -->
+                <div class="h-12"></div>
+
+                <!-- Section berikutnya -->
+                <div class="w-full bg-[#eaf6fa] pt-16 pb-8">
+                    <!-- VISI & MISI -->
+                    <section id="tentang" class="w-full flex flex-col md:flex-row gap-10 mb-16 scroll-mt-24">
+                        <div class="flex-1 bg-[#0F2538] p-8 flex flex-col items-start shadow-md rounded-xl">
+                            <span class="text-white text-lg font-bold px-4 py-2 rounded bg-[0F2538#] mb-4 shadow">VISI</span>
+                            <ol class="list-decimal ml-6 text-white/90 text-base space-y-2">
+                                <li>Menyediakan air minum yang aman, berkualitas, dan cukup untuk seluruh lapisan masyarakat.</li>
+                                <li>Melaksanakan kinerja perusahaan melalui pengelolaan yang efisien, transparan, dan akuntabel.</li>
+                                <li>Mengoptimalkan pemanfaatan teknologi untuk memberikan layanan yang lebih cepat dan tepat.</li>
+                            </ol>
+                        </div>
+                        <div class="flex-1 bg-[#b2e0f7] p-8 flex flex-col items-start shadow-md rounded-xl">
+                            <span class="text-[#1e355e] text-lg font-bold px-4 py-2 rounded bg-[#b2e0f7] mb-4 shadow">MISI</span>
+                            <ol class="list-decimal ml-6 text-[#1e355e] text-base space-y-2">
+                                <li>Menyediakan air minum yang aman, berkualitas, dan cukup untuk seluruh lapisan masyarakat.</li>
+                                <li>Meningkatkan kinerja perusahaan melalui pengelolaan yang efisien, transparan, dan akuntabel.</li>
+                                <li>Mengoptimalkan pemanfaatan teknologi untuk memberikan layanan yang lebih cepat dan tepat.</li>
+                            </ol>
+                        </div>
+                    </section>
 
         <!-- Informasi & Berita -->
-        <div class="w-full max-w-5xl mx-auto mb-16">
+        <section id="artikel" class="w-full max-w-5xl mx-auto mb-16 scroll-mt-24">
             <h2 class="text-2xl md:text-3xl font-bold mb-2">
                 Temukan <span class="text-[#0097a7]">Informasi</span> & <span class="text-yellow-500">berita</span> terbaru kami
             </h2>
@@ -123,11 +128,11 @@
                     <span class="text-xs text-gray-500 mt-1">10 Mei 2024</span>
                 </div>
             </div>
-        </div>
+        </section>
 
         <!-- Sejarah -->
-        <div class="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col md:flex-row gap-10 items-center mb-16">
-            <div class="flex-1">
+        <section id="sejarah" class="w-full max-w-5xl mx-auto bg-white rounded-xl shadow-lg p-6 md:p-10 flex flex-col md:flex-row gap-10 items-center mb-16 scroll-mt-24">
+            <div class="flex-1 order-2 md:order-1">
                 <h3 class="font-bold text-lg md:text-xl mb-2 text-[#1e355e]">Sejarah Perumda Air Minum Tirta Tamiang</h3>
                 <p class="text-gray-700 mb-2">
                     Perusahaan Umum Daerah Air Minum (Perumda) Tirta Tamiang merupakan perusahaan milik daerah yang bertanggung jawab dalam penyediaan layanan air bersih bagi masyarakat di Kabupaten Aceh Tamiang. Sejarah pendirian perusahaan ini tidak lepas dari kebutuhan masyarakat akan air bersih yang layak serta upaya pemerintah daerah dalam meningkatkan pelayanan publik di sektor air minum.
@@ -142,64 +147,85 @@
                     Dengan visi untuk menjadi perusahaan air minum yang profesional, inovatif, dan berkelanjutan, Perumda Air Minum Tirta Tamiang akan terus berupaya memberikan layanan terbaik bagi masyarakat. Melalui tata kelola yang baik dan pemanfaatan teknologi, perusahaan ini optimis dapat memenuhi kebutuhan air bersih yang berkualitas bagi seluruh pelanggan.
                 </p>
             </div>
-            <img src="https://asset.kompas.com/crops/3p9Qw5Qn2y5wQnQw5Qn2y5wQnQw=/0x0:780x390/750x500/data/photo/2020/01/16/5e1f1e7e2e1e2.jpg" alt="Kantor PDAM" class="rounded-lg shadow w-full max-w-xs object-cover">
-        </div>
-
-        <!-- Struktur Organisasi -->
-        <section class="w-full bg-white py-16 px-2 flex flex-col items-center mb-16" id="struktur-organisasi">
-            <h2 class="text-xl md:text-2xl font-bold text-center mb-10">
-                <span class="bg-[#b2e0f7] px-6 py-2 rounded shadow text-[#1e355e]">Struktur Organisasi</span>
-            </h2>
-            <div class="w-full max-w-5xl grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-4 mb-12 justify-items-center">
-                <!-- Contoh 1 baris atas -->
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/1.jpg') }}" alt="Drs. Tri Kurnia" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Nama 1</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/2.jpg') }}" alt="Amirul Mukminin" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Nama 2</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/3.jpg') }}" alt="Zulfikar" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Nama 3</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/4.jpg') }}" alt="Yanto" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Nama 4</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/5.jpg') }}" alt="Tgk.Rubiah" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Nama 5</div>
-                </div>
-                <!-- Baris bawah -->
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/6.jpg') }}" alt="Aznar Annas" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Tjut Rahida<br>Kepala Cabang Hilir</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/7.jpg') }}" alt="Diego A" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Azwar Anwar<br>Kasi Bidang Hubung</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/8.jpg') }}" alt="Tuti Kurniahati" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Dispa A<br>Kasi Bidang Pengadaan</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/9.jpg') }}" alt="Khadijah" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Teti Nurhalizah<br>Kasi Bidang Keu</div>
-                </div>
-                <div class="flex flex-col items-center">
-                    <img src="{{ asset('images/struktur/10.jpg') }}" alt="Musliadi" class="w-28 h-28 rounded-full object-cover border-4 border-[#1ec6e6] shadow">
-                    <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Musliadi<br>Kasi Bidang SPI</div>
-                </div>
+            <div class="flex-shrink-0 order-1 md:order-">
+                <img src="{{ asset('images/20220616-pdam-taming 1.png') }}" alt="Kantor PDAM" class="rounded-lg shadow w-full max-w-xs">
             </div>
         </section>
-    </div>
 
+
+<!-- Struktur Organisasi -->
+<section id="struktur-organisasi" class="w-full bg-white py-16 px-2 flex flex-col items-center mb-16 scroll-mt-24">
+    <h2 class="text-xl md:text-2xl font-bold text-center mb-10">
+        <span class="bg-[#b2e0f7] px-6 py-2 rounded shadow text-[#1e355e]">Struktur Organisasi</span>
+    </h2>
+    <div class="w-full max-w-5xl grid grid-cols-2 md:grid-cols-5 gap-y-10 gap-x-4 mb-12 justify-items-center">
+        <!-- Baris atas -->
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/direktur.jpg') }}" alt="Drs. Tri Kurnia" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Drs. Tri Kurnia<br>Direktur Utama</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/amirul.jpg') }}" alt="Amirul Mukminin" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Amirul Mukminin<br>Kabag ADM & Keu</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/gobang.jpg') }}" alt="Zulfikar" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Zulfikar<br>Kabag Teknik</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/jamilah.jpg') }}" alt="Jamilah" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Jamilah<br>Ketua SPI</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/yanto.jpg') }}" alt="Yanto" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Yanto<br>Kepala Cabang Kota</div>
+        </div>
+        <!-- Baris bawah -->
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/tgk.png') }}" alt="Tgk.Rubiah" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Tgk.Rubiah<br>Kepala Cabang Hilir</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/annas1-768x768.jpg') }}" alt="Aznar Annas" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Aznar Annas<br>Kasubbag Hublang</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/DIEGO-removebg-preview-removebg-preview.png') }}" alt="Diego A" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Diego A<br>Kasubbag Penagihan</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/b-tuti-768x768.jpg') }}" alt="Tuti Kurniahati" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Tuti Kurniawati<br>Kasubbag Kas</div>
+        </div>
+        <div class="flex flex-col items-center">
+            <div class="w-28 h-28 rounded-full border-4 border-[#1ec6e6] shadow flex items-center justify-center overflow-hidden bg-white">
+                <img src="{{ asset('images/ijah-removebg-preview-768x768.jpg') }}" alt="Khadijah" class="object-cover w-full h-full">
+            </div>
+            <div class="bg-[#1e355e] text-white text-xs font-semibold px-3 py-1 rounded mt-3 w-32 text-center">Khadijah<br>Kasubbag</div>
+        </div>
+    </div>
+</section>
     <!-- Footer -->
-    <footer class="w-full bg-[#10283a] text-white pt-8 pb-6 mt-0">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start px-4 gap-8 w-full">
+    <footer class="w-full bg-[#0F2538] text-white py-12">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 items-start text-sm">
             <!-- Kontak Kami -->
             <div class="flex-1 mb-8 md:mb-0 w-full">
                 <div class="font-semibold text-sm mb-2 border-b-2 border-[#00bcd4] w-40 pb-1">Kontak kami</div>

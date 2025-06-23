@@ -9,20 +9,42 @@
 </head>
 <body class="bg-white min-h-screen">
     <div class="flex w-full min-h-screen">
-        <!-- Sidebar -->
-        <div class="bg-[#10283a] w-20 flex flex-col items-center py-6 space-y-8">
-            <div class="bg-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-[#10283a] mb-2">S</div>
-            <a href="{{ url('/') }}" class="text-white text-2xl"><i class="fas fa-home"></i></a>
-            <a href="#" class="text-white text-2xl"><i class="fas fa-folder"></i></a>
-            <a href="#" class="text-white text-2xl"><i class="fas fa-file-alt"></i></a>
-        </div>
+<!-- Sidebar -->
+<aside class="w-20 bg-[#10283a] min-h-screen flex flex-col items-center py-6 space-y-8">
+    <!-- Logo bulat di atas -->
+    <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mb-8">
+        <span class="text-black font-bold text-xl">N</span>
+    </div>
+    <!-- Menu -->
+    <nav class="flex flex-col items-center space-y-10 flex-1">
+        <a href="#" class="flex flex-col items-center group">
+            <i class="fas fa-home text-white text-3xl group-hover:text-[#92CEE6]"></i>
+            <span class="text-xs text-white mt-1">Beranda</span>
+        </a>
+        <a href="#" class="flex flex-col items-center group">
+            <i class="fas fa-folder text-white text-3xl group-hover:text-[#92CEE6]"></i>
+            <span class="text-xs text-white mt-1">Cek Tagihan</span>
+        </a>
+        <a href="#" class="flex flex-col items-center group">
+            <i class="fas fa-file-alt text-white text-3xl group-hover:text-[#92CEE6]"></i>
+            <span class="text-xs text-white mt-1">Pengaduan</span>
+        </a>
+    <!-- Logout -->
+<form action="{{ route('logout') }}" method="POST" style="display:inline;">
+    @csrf
+    <button type="submit" class="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 hover:bg-red-200 transition text-red-600 text-xl focus:outline-none" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+    </button>
+    <span class="text-xs text-red-600 mt-1 block text-center">Logout</span>
+</form>
+</aside>
         <!-- Main Content -->
         <div class="flex-1 px-8 py-8">
             <div class="flex justify-between items-start">
                 <div>
-                    <h1 class="text-2xl font-semibold mb-4">Informasi Tagihan</h1>
-                    <form class="flex items-center mb-6 space-x-2">
-                        <label class="text-sm font-medium">Pilih Bulan Tagihan</label>
+                    <h1 class="text-4xl font-bold mb-4">Informasi Tagihan</h1>
+                    <form class="flex items-center mb-20 space-x-2">
+                        <label class="text-lg font">Pilih Bulan Tagihan</label>
                         <input type="month" class="border-b-2 border-gray-400 bg-transparent focus:outline-none focus:border-[#6bb6d6] text-sm px-2 py-1" />
                         <button type="submit" class="bg-[#a7d3e9] text-[#10283a] font-bold px-6 py-1 rounded-lg ml-2 hover:bg-[#6bb6d6] transition">Cek</button>
                     </form>
@@ -51,7 +73,7 @@
                             <td class="px-4 py-2 border border-gray-400">244.226</td>
                             <td class="px-4 py-2 border border-gray-400">2.500</td>
                             <td class="px-4 py-2 border border-gray-400">0</td>
-                            <td class="px-4 py-2 border border-gray-400">246.726</td>
+                            <td class="px-4 py-2 border border-gray-400 font-bold">246.726</td>
                         </tr>
                     </tbody>
                 </table>
