@@ -1,51 +1,69 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 
 class AuthController extends Controller
 {
     public function showLogin()
     {
+        // Redirect jika sudah login
         if (Auth::check()) {
-            // Redirect sesuai role
-            if (Auth::user()->role === 'admin') {
-                return redirect()->route('dashboard');
-            } else {
-                return redirect()->route('dashboardmasyarakat');
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect('/dashboardadmin');
             }
+            return redirect('/dashboardmasyarakat');
         }
+        
         return view('login');
     }
 
     public function login(Request $request)
     {
+        // Validasi input
         $credentials = $request->validate([
-            'nama_pelanggan' => ['required'],
-            'id_pelanggan' => ['required'],
+            'nama_pelanggan' => ['required', 'string'],
+            'id_pel' => ['required', 'string'],
+        ], [
+            'nama_pelanggan.required' => 'Nama pelanggan wajib diisi',
+            'id_pel.required' => 'ID pelanggan wajib diisi',
         ]);
 
-        $user = User::where('nama_pelanggan', $credentials['nama_pelanggan'])
-            ->where('id_pelanggan', $credentials['id_pelanggan'])
-            ->first();
+        try {
+            // Cari user berdasarkan nama_pelanggan
+            $user = User::where('nama_pelanggan', trim($credentials['nama_pelanggan']))->first();
 
-        if ($user) {
-            Auth::login($user);
-            $request->session()->regenerate();
+            // Jika user ditemukan, cek password (id_pel sebagai password)
+            if ($user && Hash::check($credentials['id_pel'], $user->password)) {
+                // Login user
+                Auth::login($user);
+                $request->session()->regenerate();
 
-            // Redirect sesuai role
-            if ($user->role === 'admin') {
-                return redirect()->route('dashboard');
-            } else {
-                return redirect()->route('dashboardmasyarakat');
+                // Redirect berdasarkan role
+                if ($user->role === 'admin') {
+                    return redirect()->intended('/dashboardadmin')
+                        ->with('success', 'Selamat datang, ' . $user->nama_pelanggan . '!');
+                } else {
+                    return redirect()->intended('/dashboardmasyarakat')
+                        ->with('success', 'Selamat datang, ' . $user->nama_pelanggan . '!');
+                }
             }
-        }
 
-        return back()->withErrors([
-            'nama_pelanggan' => 'Nama pelanggan atau ID pelanggan salah.',
-        ])->onlyInput('nama_pelanggan');
+            // Login gagal
+            return back()->withErrors([
+                'nama_pelanggan' => 'Nama pelanggan atau ID pelanggan tidak valid.',
+            ])->withInput();
+
+        } catch (\Exception $e) {
+            return back()->withErrors([
+                'nama_pelanggan' => 'Terjadi kesalahan sistem. Silakan coba lagi.',
+            ])->withInput();
+        }
     }
 
     public function logout(Request $request)
@@ -53,6 +71,7 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route('login');
+
+        return redirect('/')->with('success', 'Anda berhasil logout!');
     }
 }
