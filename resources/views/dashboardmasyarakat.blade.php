@@ -6,12 +6,26 @@
     <title>Dashboard Pelanggan - PDAM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'pdam-dark': '#005792',
+                        'pdam-blue': '#53CDE2',
+                        'pdam-light': '#D1F4FA',
+                        'pdam-lightest': '#EDF9FC'
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         .fade-in { animation: fadeIn 0.5s ease-in; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .card-hover { transition: all 0.3s ease; }
-        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); }
-        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .card-hover:hover { transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0, 87, 146, 0.15); }
+        .pdam-gradient { background: linear-gradient(135deg, #005792 0%, #53CDE2 100%); }
         .pulse-ring { animation: pulse-ring 1.85s cubic-bezier(0.215, 0.61, 0.355, 1) infinite; }
         @keyframes pulse-ring { 0% { transform: scale(0.33); } 80%, 100% { opacity: 0; } }
         
@@ -29,11 +43,11 @@
             width: 200%;
             height: 100%;
             background: linear-gradient(90deg, 
-                rgba(59, 130, 246, 0.1) 0%, 
-                rgba(147, 197, 253, 0.2) 25%, 
-                rgba(59, 130, 246, 0.15) 50%, 
-                rgba(147, 197, 253, 0.2) 75%, 
-                rgba(59, 130, 246, 0.1) 100%);
+                rgba(0, 87, 146, 0.1) 0%, 
+                rgba(83, 205, 226, 0.2) 25%, 
+                rgba(0, 87, 146, 0.15) 50%, 
+                rgba(83, 205, 226, 0.2) 75%, 
+                rgba(0, 87, 146, 0.1) 100%);
             animation: wave-flow 3s linear infinite;
         }
         
@@ -44,11 +58,11 @@
             width: 200%;
             height: 100%;
             background: linear-gradient(90deg, 
-                rgba(34, 197, 94, 0.08) 0%, 
-                rgba(134, 239, 172, 0.15) 25%, 
-                rgba(34, 197, 94, 0.12) 50%, 
-                rgba(134, 239, 172, 0.15) 75%, 
-                rgba(34, 197, 94, 0.08) 100%);
+                rgba(209, 244, 250, 0.08) 0%, 
+                rgba(237, 249, 252, 0.15) 25%, 
+                rgba(209, 244, 250, 0.12) 50%, 
+                rgba(237, 249, 252, 0.15) 75%, 
+                rgba(209, 244, 250, 0.08) 100%);
             animation: wave-flow-reverse 4s linear infinite;
         }
         
@@ -76,7 +90,7 @@
             position: absolute;
             width: 4px;
             height: 4px;
-            background: rgba(59, 130, 246, 0.6);
+            background: rgba(83, 205, 226, 0.6);
             border-radius: 50%;
             animation: droplet-fall linear infinite;
         }
@@ -98,7 +112,7 @@
         .bubble {
             position: absolute;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(237, 249, 252, 0.3);
             animation: bubble-rise linear infinite;
         }
         
@@ -138,7 +152,7 @@
             height: 4px;
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                rgba(59, 130, 246, 0.8) 50%, 
+                rgba(83, 205, 226, 0.8) 50%, 
                 transparent 100%);
             animation: pipe-flow 1.5s linear infinite;
         }
@@ -168,9 +182,9 @@
             height: 100%;
             background: linear-gradient(90deg, 
                 transparent 0%, 
-                rgba(255, 255, 255, 0.1) 25%, 
-                rgba(255, 255, 255, 0.2) 50%, 
-                rgba(255, 255, 255, 0.1) 75%, 
+                rgba(237, 249, 252, 0.1) 25%, 
+                rgba(237, 249, 252, 0.2) 50%, 
+                rgba(237, 249, 252, 0.1) 75%, 
                 transparent 100%);
             animation: header-flow 8s ease-in-out infinite;
         }
@@ -181,26 +195,26 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-blue-50 min-h-screen">
+<body class="bg-gradient-to-br from-pdam-lightest to-pdam-light min-h-screen">
     <!-- Include Sidebar -->
     @include('component.sidebar')
     
     <!-- Main Content -->
     <div class="lg:ml-72 transition-all duration-300">
         <!-- Header dengan Gradient dan Water Effect -->
-        <header class="gradient-bg shadow-lg sticky top-0 z-20 relative">
+        <header class="pdam-gradient shadow-lg sticky top-0 z-20 relative">
             <div class="header-water"></div>
             <div class="px-6 py-6 relative z-10">
                 <div class="flex items-center justify-between">
                     <div class="ml-12 lg:ml-0 text-white">
                         <h1 class="text-3xl font-bold">Dashboard Pelanggan</h1>
-                        <p class="text-blue-100 mt-1">
+                        <p class="text-pdam-light mt-1">
                             <i class="fas fa-user-circle mr-2"></i>
                             {{ Auth::user()->nama_pelanggan ?? 'Pengguna' }}
                         </p>
                     </div>
                     <div class="text-right text-white">
-                        <p class="text-blue-100 text-sm">{{ date('l, d F Y') }}</p>
+                        <p class="text-pdam-light text-sm">{{ date('l, d F Y') }}</p>
                         <p class="text-lg font-semibold" id="currentTime"></p>
                     </div>
                 </div>
@@ -212,7 +226,7 @@
             <!-- Quick Stats Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
                 <!-- Status Pelanggan -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 card-hover fade-in water-container">
+                <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 p-6 card-hover fade-in water-container">
                     <div class="water-wave"></div>
                     <div class="water-droplets">
                         <div class="droplet"></div>
@@ -224,23 +238,23 @@
                     <div class="flex items-center justify-between relative z-10">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-2">Status Pelanggan</p>
-                            <p class="text-xl font-bold {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'text-green-600' : 'text-red-500' }}">
+                            <p class="text-xl font-bold {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'text-pdam-dark' : 'text-red-500' }}">
                                 {{ Auth::user()->status_pelanggan ?? 'TIDAK AKTIF' }}
                             </p>
                         </div>
                         <div class="relative">
-                            <div class="w-16 h-16 {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'bg-green-100' : 'bg-red-100' }} rounded-2xl flex items-center justify-center">
-                                <i class="fas {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'fa-user-check text-green-600' : 'fa-user-times text-red-500' }} text-2xl"></i>
+                            <div class="w-16 h-16 {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'bg-pdam-lightest' : 'bg-red-100' }} rounded-2xl flex items-center justify-center">
+                                <i class="fas {{ (Auth::user()->status_pelanggan ?? '') === 'AKTIF' ? 'fa-user-check text-pdam-dark' : 'fa-user-times text-red-500' }} text-2xl"></i>
                             </div>
                             @if((Auth::user()->status_pelanggan ?? '') === 'AKTIF')
-                            <div class="absolute -top-1 -right-1 w-6 h-6 bg-green-500 rounded-full pulse-ring"></div>
+                            <div class="absolute -top-1 -right-1 w-6 h-6 bg-pdam-blue rounded-full pulse-ring"></div>
                             @endif
                         </div>
                     </div>
                 </div>
 
                 <!-- Pemakaian Air -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 card-hover fade-in water-container">
+                <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 p-6 card-hover fade-in water-container">
                     <div class="water-wave-2"></div>
                     <div class="water-droplets">
                         <div class="bubble"></div>
@@ -250,31 +264,31 @@
                     <div class="flex items-center justify-between relative z-10">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-2">Pemakaian Bulan Ini</p>
-                            <p class="text-xl font-bold text-blue-600">
+                            <p class="text-xl font-bold text-pdam-dark">
                                 {{ Auth::user()->total_pemakaian_m3 ?? 0 }} m³
                             </p>
                             <div class="pipe-flow mt-2">
-                                <div class="h-1 bg-blue-100 rounded-full"></div>
+                                <div class="h-1 bg-pdam-light rounded-full"></div>
                             </div>
                         </div>
-                        <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
-                            <i class="fas fa-tint text-blue-600 text-2xl"></i>
+                        <div class="w-16 h-16 bg-pdam-lightest rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-tint text-pdam-blue text-2xl"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Status Meter -->
-                <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 card-hover fade-in water-container">
+                <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 p-6 card-hover fade-in water-container">
                     <div class="water-wave"></div>
                     <div class="flex items-center justify-between relative z-10">
                         <div>
                             <p class="text-sm font-medium text-gray-500 mb-2">Status Meter</p>
-                            <p class="text-lg font-bold text-purple-600">
+                            <p class="text-lg font-bold text-pdam-dark">
                                 {{ Auth::user()->status_meter ?? 'Normal' }}
                             </p>
                         </div>
-                        <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center">
-                            <i class="fas fa-tachometer-alt text-purple-600 text-2xl"></i>
+                        <div class="w-16 h-16 bg-pdam-lightest rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-tachometer-alt text-pdam-blue text-2xl"></i>
                         </div>
                     </div>
                 </div>
@@ -284,21 +298,21 @@
             <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
                 <!-- Left: Info Pelanggan -->
                 <div class="xl:col-span-1">
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 card-hover fade-in h-full water-container">
+                    <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 p-6 card-hover fade-in h-full water-container">
                         <div class="water-wave-2"></div>
                         <div class="relative z-10">
                             <div class="text-center mb-6">
-                                <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                <div class="w-20 h-20 pdam-gradient rounded-full mx-auto mb-4 flex items-center justify-center">
                                     <i class="fas fa-user text-white text-3xl"></i>
                                 </div>
                                 <h3 class="text-xl font-bold text-gray-900">{{ Auth::user()->nama_pelanggan ?? 'Pelanggan' }}</h3>
-                                <p class="text-gray-500">ID: {{ Auth::user()->id_pel ?? 'N/A' }}</p>
+                                <p class="text-pdam-dark">ID: {{ Auth::user()->id_pel ?? 'N/A' }}</p>
                             </div>
 
                             <div class="space-y-4">
                                 @if(Auth::user()->alamat)
-                                <div class="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
-                                    <i class="fas fa-map-marker-alt text-red-500 mt-1"></i>
+                                <div class="flex items-start space-x-3 p-3 bg-pdam-lightest rounded-lg">
+                                    <i class="fas fa-map-marker-alt text-pdam-blue mt-1"></i>
                                     <div>
                                         <p class="text-sm text-gray-500">Alamat</p>
                                         <p class="font-medium">{{ Auth::user()->alamat }}</p>
@@ -307,8 +321,8 @@
                                 @endif
 
                                 @if(Auth::user()->goltar)
-                                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                                    <i class="fas fa-layer-group text-green-500"></i>
+                                <div class="flex items-center space-x-3 p-3 bg-pdam-lightest rounded-lg">
+                                    <i class="fas fa-layer-group text-pdam-blue"></i>
                                     <div>
                                         <p class="text-sm text-gray-500">Golongan Tarif</p>
                                         <p class="font-medium">{{ Auth::user()->goltar }}</p>
@@ -317,8 +331,8 @@
                                 @endif
 
                                 @if(Auth::user()->periode_terakhir)
-                                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                                    <i class="fas fa-calendar text-blue-500"></i>
+                                <div class="flex items-center space-x-3 p-3 bg-pdam-lightest rounded-lg">
+                                    <i class="fas fa-calendar text-pdam-blue"></i>
                                     <div>
                                         <p class="text-sm text-gray-500">Periode Terakhir</p>
                                         <p class="font-medium">{{ Auth::user()->periode_terakhir }}</p>
@@ -328,15 +342,15 @@
                             </div>
 
                             <!-- Quick Actions -->
-                            <div class="mt-6 pt-6 border-t border-gray-200">
+                            <div class="mt-6 pt-6 border-t border-pdam-light/50">
                                 <div class="grid grid-cols-2 gap-3">
-                                    <a href="{{ route('cektagihan') }}" class="flex flex-col items-center p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-all group">
-                                        <i class="fas fa-file-invoice text-blue-600 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                                        <span class="text-sm font-medium text-blue-700">Cek Tagihan</span>
+                                    <a href="{{ route('cektagihan') }}" class="flex flex-col items-center p-4 bg-pdam-lightest hover:bg-pdam-light rounded-xl transition-all group">
+                                        <i class="fas fa-file-invoice text-pdam-dark text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                                        <span class="text-sm font-medium text-pdam-dark">Cek Tagihan</span>
                                     </a>
-                                    <a href="#" class="flex flex-col items-center p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-all group">
-                                        <i class="fas fa-headset text-green-600 text-xl mb-2 group-hover:scale-110 transition-transform"></i>
-                                        <span class="text-sm font-medium text-green-700">Pengaduan</span>
+                                    <a href="#" class="flex flex-col items-center p-4 bg-pdam-lightest hover:bg-pdam-light rounded-xl transition-all group">
+                                        <i class="fas fa-headset text-pdam-blue text-xl mb-2 group-hover:scale-110 transition-transform"></i>
+                                        <span class="text-sm font-medium text-pdam-blue">Pengaduan</span>
                                     </a>
                                 </div>
                             </div>
@@ -348,7 +362,7 @@
                 <div class="xl:col-span-2 space-y-8">
                     <!-- Jatuh Tempo Card - Only if there's a bill -->
                     @if((Auth::user()->total_tagihan ?? 0) > 0)
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden card-hover fade-in">
+                    <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 overflow-hidden card-hover fade-in">
                         <div class="bg-gradient-to-r from-orange-500 to-red-500 p-6 text-white relative">
                             <div class="header-water"></div>
                             <div class="flex items-center justify-between relative z-10">
@@ -390,15 +404,15 @@
                     @endif
 
                     <!-- Riwayat Pengaduan -->
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 card-hover fade-in water-container">
+                    <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 card-hover fade-in water-container">
                         <div class="water-wave"></div>
-                        <div class="p-6 border-b border-gray-200 relative z-10">
+                        <div class="p-6 border-b border-pdam-light/50 relative z-10">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-xl font-bold text-gray-900">
-                                    <i class="fas fa-history text-purple-600 mr-2"></i>
+                                    <i class="fas fa-history text-pdam-blue mr-2"></i>
                                     Riwayat Pengaduan
                                 </h3>
-                                <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm font-medium">
+                                <span class="bg-pdam-lightest text-pdam-dark px-3 py-1 rounded-full text-sm font-medium">
                                     {{ isset($riwayat_pengaduan) ? $riwayat_pengaduan->count() : 0 }} pengaduan
                                 </span>
                             </div>
@@ -408,9 +422,9 @@
                             @if(isset($riwayat_pengaduan) && $riwayat_pengaduan->count() > 0)
                                 <div class="space-y-4">
                                     @foreach($riwayat_pengaduan->take(5) as $pengaduan)
-                                    <div class="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                        <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                            <i class="fas fa-ticket-alt text-purple-600"></i>
+                                    <div class="flex items-start space-x-4 p-4 bg-pdam-lightest rounded-lg hover:bg-pdam-light transition-colors">
+                                        <div class="w-10 h-10 bg-pdam-light rounded-lg flex items-center justify-center flex-shrink-0">
+                                            <i class="fas fa-ticket-alt text-pdam-dark"></i>
                                         </div>
                                         <div class="flex-1 min-w-0">
                                             <div class="flex items-center justify-between mb-1">
@@ -427,7 +441,7 @@
                                     
                                     @if($riwayat_pengaduan->count() > 5)
                                     <div class="text-center pt-4">
-                                        <a href="#" class="text-purple-600 hover:text-purple-700 font-medium text-sm">
+                                        <a href="#" class="text-pdam-blue hover:text-pdam-dark font-medium text-sm">
                                             Lihat semua pengaduan <i class="fas fa-arrow-right ml-1"></i>
                                         </a>
                                     </div>
@@ -438,7 +452,7 @@
                                     <i class="fas fa-comments text-gray-300 text-4xl mb-4"></i>
                                     <h4 class="text-lg font-medium text-gray-500 mb-2">Belum ada pengaduan</h4>
                                     <p class="text-gray-400 mb-4">Anda belum pernah mengajukan pengaduan</p>
-                                    <a href="#" class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+                                    <a href="#" class="inline-flex items-center px-4 py-2 bg-pdam-dark text-white rounded-lg hover:bg-pdam-blue transition-colors">
                                         <i class="fas fa-plus mr-2"></i>
                                         Buat Pengaduan Baru
                                     </a>
@@ -447,30 +461,30 @@
                         </div>
                     </div>
 
-                    <!-- Water Usage Chart (New Section) -->
-                    <div class="bg-white rounded-2xl shadow-lg border border-gray-100 card-hover fade-in water-container">
+                    <!-- Water Usage Chart -->
+                    <div class="bg-white rounded-2xl shadow-lg border border-pdam-light/30 card-hover fade-in water-container">
                         <div class="water-wave-2"></div>
                         <div class="p-6 relative z-10">
                             <h3 class="text-xl font-bold text-gray-900 mb-6">
-                                <i class="fas fa-chart-line text-blue-600 mr-2"></i>
+                                <i class="fas fa-chart-line text-pdam-blue mr-2"></i>
                                 Monitoring Pemakaian Air
                             </h3>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div class="text-center p-4 bg-blue-50 rounded-xl">
+                                <div class="text-center p-4 bg-pdam-lightest rounded-xl">
                                     <div class="pipe-flow mb-3">
-                                        <i class="fas fa-tint text-blue-600 text-3xl"></i>
+                                        <i class="fas fa-tint text-pdam-blue text-3xl"></i>
                                     </div>
                                     <p class="text-sm font-medium text-gray-600 mb-1">Stand Meter Saat Ini</p>
-                                    <p class="text-2xl font-bold text-blue-600">
+                                    <p class="text-2xl font-bold text-pdam-dark">
                                         {{ Auth::user()->angka_meter_kini ?? 0 }}
                                     </p>
                                 </div>
                                 
-                                <div class="text-center p-4 bg-green-50 rounded-xl">
-                                    <i class="fas fa-leaf text-green-600 text-3xl mb-3"></i>
+                                <div class="text-center p-4 bg-pdam-lightest rounded-xl">
+                                    <i class="fas fa-leaf text-pdam-blue text-3xl mb-3"></i>
                                     <p class="text-sm font-medium text-gray-600 mb-1">Status Efisiensi</p>
-                                    <p class="text-lg font-bold text-green-600">
+                                    <p class="text-lg font-bold text-pdam-dark">
                                         @php
                                             $usage = Auth::user()->total_pemakaian_m3 ?? 0;
                                             $efficiency = $usage <= 10 ? 'Sangat Hemat' : ($usage <= 20 ? 'Hemat' : 'Normal');
@@ -496,17 +510,6 @@
         }
         updateTime();
         setInterval(updateTime, 1000);
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
 
         // Add fade-in animation delay
         document.querySelectorAll('.fade-in').forEach((el, index) => {
