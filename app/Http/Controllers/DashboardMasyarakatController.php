@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Pengaduan;
 
 class DashboardMasyarakatController extends Controller
 {
@@ -16,7 +17,7 @@ class DashboardMasyarakatController extends Controller
         
         // Pastikan user bukan admin
         if ($user->role === 'admin') {
-            return redirect()->route('dashboardadmin');
+            return redirect()->route('admin.dashboard');
         }
 
         // Data statistik pelanggan berdasarkan data aktual
@@ -40,43 +41,64 @@ class DashboardMasyarakatController extends Controller
             'jatuh_tempo' => $this->calculateJatuhTempoString($user)
         ];
 
-        // Ambil pengaduan user dari database (gunakan try-catch untuk safety)
+        // Ambil riwayat pengaduan user berdasarkan nama_pelanggan atau id_pelanggan
         $riwayat_pengaduan = collect();
         try {
-            if (class_exists(\App\Models\Pengaduan::class)) {
-                $riwayat_pengaduan = \App\Models\Pengaduan::where('user_id', $user->id)
-                    ->orderBy('created_at', 'desc')
-                    ->limit(5)
-                    ->get()
-                    ->map(function ($pengaduan) {
-                        return (object)[
-                            'id' => $pengaduan->id,
-                            'tanggal' => $pengaduan->created_at->format('d M Y'),
-                            'judul' => $pengaduan->judul_pengaduan ?? 'Tidak ada judul',
-                            'isi_pengaduan' => \Str::limit($pengaduan->isi_pengaduan ?? '', 50),
-                            'status' => ucfirst($pengaduan->status ?? 'pending'),
-                            'status_class' => $this->getStatusClass($pengaduan->status ?? 'pending')
-                        ];
-                    });
-            }
+            $riwayat_pengaduan = Pengaduan::where(function($query) use ($user) {
+                $query->where('nama_pelanggan', $user->nama_pelanggan)
+                      ->orWhere('id_pelanggan', $user->id_pel);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function($pengaduan) {
+                // Tambahkan class untuk badge status
+                $pengaduan->status_class = match($pengaduan->status) {
+                    'pending' => 'bg-yellow-100 text-yellow-800',
+                    'diproses' => 'bg-blue-100 text-blue-800', 
+                    'selesai' => 'bg-green-100 text-green-800',
+                    'ditutup' => 'bg-gray-100 text-gray-800',
+                    default => 'bg-gray-100 text-gray-800'
+                };
+                
+                // Tambahkan class untuk prioritas
+                $pengaduan->prioritas_class = match($pengaduan->prioritas) {
+                    'tinggi' => 'bg-red-100 text-red-800',
+                    'sedang' => 'bg-yellow-100 text-yellow-800',
+                    'rendah' => 'bg-green-100 text-green-800',
+                    default => 'bg-gray-100 text-gray-800'
+                };
+                
+                // Format tanggal
+                $pengaduan->tanggal_formatted = $pengaduan->created_at->format('d M Y, H:i');
+                $pengaduan->tanggal_relative = $pengaduan->created_at->diffForHumans();
+                
+                // Kategori label
+                $pengaduan->kategori_label = ucfirst(str_replace('_', ' ', $pengaduan->kategori));
+                
+                // Count files
+                $pengaduan->file_count = $pengaduan->files ? count($pengaduan->files) : 0;
+                
+                return $pengaduan;
+            });
         } catch (\Exception $e) {
-            // Jika model Pengaduan belum ada, gunakan data kosong
+            // Jika ada error dengan model Pengaduan
             $riwayat_pengaduan = collect();
         }
 
         // Hitung statistik pengaduan
         $pengaduan_stats = [
             'total' => $riwayat_pengaduan->count(),
-            'pending' => $riwayat_pengaduan->where('status', 'Pending')->count(),
-            'proses' => $riwayat_pengaduan->where('status', 'Proses')->count(),
-            'selesai' => $riwayat_pengaduan->where('status', 'Selesai')->count(),
+            'pending' => $riwayat_pengaduan->where('status', 'pending')->count(),
+            'diproses' => $riwayat_pengaduan->where('status', 'diproses')->count(),
+            'selesai' => $riwayat_pengaduan->where('status', 'selesai')->count(),
+            'ditutup' => $riwayat_pengaduan->where('status', 'ditutup')->count(),
         ];
 
         // Informasi jatuh tempo berdasarkan data aktual
         $jatuh_tempo = $this->calculateJatuhTempo($user);
 
         // Data untuk notifikasi berdasarkan kondisi aktual
-        $notifications = $this->generateNotifications($user);
+        $notifications = $this->generateNotifications($user, $riwayat_pengaduan);
 
         // Data informasi umum PDAM
         $info_umum = [
@@ -87,7 +109,7 @@ class DashboardMasyarakatController extends Controller
         ];
 
         // Data grafik berdasarkan data aktual (jika ada)
-        $grafik_data = $this->getGrafikData($user);
+        $grafik_data = $this->getGrafikData($user, $riwayat_pengaduan);
 
         return view('dashboardmasyarakat', compact(
             'user',
@@ -120,9 +142,9 @@ class DashboardMasyarakatController extends Controller
     }
 
     /**
-     * Generate notifications berdasarkan kondisi user
+     * Generate notifications berdasarkan kondisi user dan pengaduan
      */
-    private function generateNotifications($user)
+    private function generateNotifications($user, $riwayat_pengaduan)
     {
         $notifications = [];
         
@@ -138,6 +160,46 @@ class DashboardMasyarakatController extends Controller
             ];
         }
 
+        // Cek pengaduan pending
+        $pengaduan_pending = $riwayat_pengaduan->where('status', 'pending');
+        if ($pengaduan_pending->count() > 0) {
+            $notifications[] = [
+                'type' => 'info',
+                'icon' => 'fa-clock',
+                'title' => 'Pengaduan Menunggu Proses',
+                'message' => 'Anda memiliki ' . $pengaduan_pending->count() . ' pengaduan yang sedang menunggu diproses',
+                'action_text' => 'Lihat Detail',
+                'action_url' => route('pengaduan.track')
+            ];
+        }
+
+        // Cek pengaduan diproses
+        $pengaduan_diproses = $riwayat_pengaduan->where('status', 'diproses');
+        if ($pengaduan_diproses->count() > 0) {
+            $notifications[] = [
+                'type' => 'success',
+                'icon' => 'fa-cogs',
+                'title' => 'Pengaduan Sedang Diproses',
+                'message' => 'Anda memiliki ' . $pengaduan_diproses->count() . ' pengaduan yang sedang ditangani',
+                'action_text' => 'Lihat Progress',
+                'action_url' => route('pengaduan.track')
+            ];
+        }
+
+        // Cek pengaduan selesai (belum dilihat dalam 7 hari terakhir)
+        $pengaduan_selesai_baru = $riwayat_pengaduan->where('status', 'selesai')
+            ->where('updated_at', '>=', now()->subDays(7));
+        if ($pengaduan_selesai_baru->count() > 0) {
+            $notifications[] = [
+                'type' => 'success',
+                'icon' => 'fa-check-circle',
+                'title' => 'Pengaduan Selesai',
+                'message' => 'Ada ' . $pengaduan_selesai_baru->count() . ' pengaduan yang baru saja diselesaikan',
+                'action_text' => 'Lihat Hasil',
+                'action_url' => route('pengaduan.track')
+            ];
+        }
+
         // Cek status meter bermasalah
         if (in_array($user->status_meter ?? '', ['RUSAK', 'TERTIMBUN', 'TERKUNCI', 'MACET'])) {
             $notifications[] = [
@@ -146,7 +208,7 @@ class DashboardMasyarakatController extends Controller
                 'title' => 'Status Meter: ' . ($user->status_meter ?? 'Bermasalah'),
                 'message' => 'Segera laporkan untuk perbaikan meter air Anda',
                 'action_text' => 'Buat Laporan',
-                'action_url' => '#'
+                'action_url' => route('pengaduanpelanggan')
             ];
         }
 
@@ -232,10 +294,12 @@ class DashboardMasyarakatController extends Controller
         switch ($statusLower) {
             case 'selesai':
                 return 'bg-green-100 text-green-800';
-            case 'proses':
+            case 'diproses':
                 return 'bg-blue-100 text-blue-800';
             case 'pending':
                 return 'bg-yellow-100 text-yellow-800';
+            case 'ditutup':
+                return 'bg-gray-100 text-gray-800';
             default:
                 return 'bg-gray-100 text-gray-800';
         }
@@ -244,33 +308,27 @@ class DashboardMasyarakatController extends Controller
     /**
      * Get data grafik berdasarkan data yang tersedia
      */
-    private function getGrafikData($user)
+    private function getGrafikData($user, $riwayat_pengaduan)
     {
-        // Untuk saat ini, return data sederhana berdasarkan user
         return [
             'pemakaian_bulan_ini' => $user->total_pemakaian_m3 ?? 0,
             'rata_rata_pemakaian' => 18, // Bisa dihitung dari data historis jika ada
-            'pengaduan_bulan_ini' => $this->getPengaduanBulanIni($user),
-            'status_pembayaran' => ($user->total_tagihan ?? 0) > 0 ? 'Belum Lunas' : 'Lunas'
+            'pengaduan_bulan_ini' => $this->getPengaduanBulanIni($riwayat_pengaduan),
+            'status_pembayaran' => ($user->total_tagihan ?? 0) > 0 ? 'Belum Lunas' : 'Lunas',
+            'total_pengaduan' => $riwayat_pengaduan->count(),
+            'pengaduan_selesai' => $riwayat_pengaduan->where('status', 'selesai')->count(),
         ];
     }
 
     /**
      * Hitung pengaduan bulan ini
      */
-    private function getPengaduanBulanIni($user)
+    private function getPengaduanBulanIni($riwayat_pengaduan)
     {
-        try {
-            if (class_exists(\App\Models\Pengaduan::class)) {
-                return \App\Models\Pengaduan::where('user_id', $user->id)
-                    ->whereMonth('created_at', now()->month)
-                    ->whereYear('created_at', now()->year)
-                    ->count();
-            }
-        } catch (\Exception $e) {
-            // Jika model tidak ada atau error, return 0
-        }
-        return 0;
+        return $riwayat_pengaduan->filter(function($pengaduan) {
+            return $pengaduan->created_at->month === now()->month && 
+                   $pengaduan->created_at->year === now()->year;
+        })->count();
     }
 
     /**
@@ -315,7 +373,12 @@ class DashboardMasyarakatController extends Controller
             ];
         } else {
             // Data pengaduan
-            $pengaduan_bulan_ini = $this->getPengaduanBulanIni($user);
+            $riwayat_pengaduan = Pengaduan::where(function($query) use ($user) {
+                $query->where('nama_pelanggan', $user->nama_pelanggan)
+                      ->orWhere('id_pelanggan', $user->id_pel);
+            })->get();
+            
+            $pengaduan_bulan_ini = $this->getPengaduanBulanIni($riwayat_pengaduan);
             $data = [
                 'labels' => ['Bulan Lalu', 'Bulan Ini'],
                 'datasets' => [
@@ -356,7 +419,14 @@ class DashboardMasyarakatController extends Controller
     public function getNotifications()
     {
         $user = Auth::user();
-        $notifications = $this->generateNotifications($user);
+        
+        // Ambil data pengaduan untuk notifikasi
+        $riwayat_pengaduan = Pengaduan::where(function($query) use ($user) {
+            $query->where('nama_pelanggan', $user->nama_pelanggan)
+                  ->orWhere('id_pelanggan', $user->id_pel);
+        })->get();
+        
+        $notifications = $this->generateNotifications($user, $riwayat_pengaduan);
         
         return response()->json([
             'notifications' => $notifications,
@@ -371,5 +441,26 @@ class DashboardMasyarakatController extends Controller
     {
         // Implementasi mark as read jika diperlukan
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Get pengaduan stats untuk AJAX
+     */
+    public function getPengaduanStats()
+    {
+        $user = Auth::user();
+        
+        $riwayat_pengaduan = Pengaduan::where(function($query) use ($user) {
+            $query->where('nama_pelanggan', $user->nama_pelanggan)
+                  ->orWhere('id_pelanggan', $user->id_pel);
+        })->get();
+
+        return response()->json([
+            'total' => $riwayat_pengaduan->count(),
+            'pending' => $riwayat_pengaduan->where('status', 'pending')->count(),
+            'diproses' => $riwayat_pengaduan->where('status', 'diproses')->count(),
+            'selesai' => $riwayat_pengaduan->where('status', 'selesai')->count(),
+            'ditutup' => $riwayat_pengaduan->where('status', 'ditutup')->count(),
+        ]);
     }
 }

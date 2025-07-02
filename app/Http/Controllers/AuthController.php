@@ -15,7 +15,7 @@ class AuthController extends Controller
         if (Auth::check()) {
             $user = Auth::user();
             if ($user->role === 'admin') {
-                return redirect('/dashboardadmin');
+                return redirect('/admin/dashboard'); // Perbaiki route admin
             }
             return redirect('/dashboardmasyarakat');
         }
@@ -44,10 +44,10 @@ class AuthController extends Controller
                 Auth::login($user);
                 $request->session()->regenerate();
 
-                // Redirect berdasarkan role
+                // Redirect berdasarkan role dengan route yang benar
                 if ($user->role === 'admin') {
-                    return redirect()->intended('/dashboardadmin')
-                        ->with('success', 'Selamat datang, ' . $user->nama_pelanggan . '!');
+                    return redirect()->intended('/admin/dashboard')
+                        ->with('success', 'Selamat datang Admin, ' . $user->nama_pelanggan . '!');
                 } else {
                     return redirect()->intended('/dashboardmasyarakat')
                         ->with('success', 'Selamat datang, ' . $user->nama_pelanggan . '!');
@@ -72,6 +72,6 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/')->with('success', 'Anda berhasil logout!');
+        return redirect('/login')->with('success', 'Anda berhasil logout!');
     }
 }

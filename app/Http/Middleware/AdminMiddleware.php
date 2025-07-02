@@ -16,12 +16,14 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Check if user is authenticated
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu');
         }
 
+        // Check if user has admin role
         if (Auth::user()->role !== 'admin') {
-            return redirect()->route('dashboardmasyarakat')->with('error', 'Akses ditolak. Hanya admin yang dapat mengakses halaman ini.');
+            return redirect()->route('dashboard')->with('error', 'Akses ditolak. Anda bukan admin.');
         }
 
         return $next($request);
