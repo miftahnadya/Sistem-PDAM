@@ -18,13 +18,15 @@ return new class extends Migration
             $table->enum('kategori', ['kualitas_air', 'ketersediaan_air', 'tagihan', 'pelayanan', 'perbaikan', 'lainnya']);
             $table->string('judul');
             $table->text('detail_pengaduan');
-            $table->json('files')->nullable();
+            $table->json('files')->nullable(); // Pastikan menggunakan JSON
             $table->enum('status', ['pending', 'diproses', 'selesai', 'ditutup'])->default('pending');
-            $table->enum('prioritas', ['rendah', 'sedang', 'tinggi'])->default('sedang');
+            $table->timestamp('tanggal_pengaduan')->useCurrent();
             $table->text('response_admin')->nullable();
             $table->timestamp('tanggal_response')->nullable();
-            $table->string('admin_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
+            
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 

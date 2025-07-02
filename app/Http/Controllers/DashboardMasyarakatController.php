@@ -61,7 +61,7 @@ class DashboardMasyarakatController extends Controller
                 };
                 
                 // Tambahkan class untuk prioritas
-                $pengaduan->prioritas_class = match($pengaduan->prioritas) {
+                $pengaduan->prioritas_class = match($pengaduan->prioritas ?? '') {
                     'tinggi' => 'bg-red-100 text-red-800',
                     'sedang' => 'bg-yellow-100 text-yellow-800',
                     'rendah' => 'bg-green-100 text-green-800',
@@ -75,8 +75,8 @@ class DashboardMasyarakatController extends Controller
                 // Kategori label
                 $pengaduan->kategori_label = ucfirst(str_replace('_', ' ', $pengaduan->kategori));
                 
-                // Count files
-                $pengaduan->file_count = $pengaduan->files ? count($pengaduan->files) : 0;
+                // Count files - PERBAIKAN ERROR DI SINI
+                $pengaduan->file_count = $this->getFileCount($pengaduan->files);
                 
                 return $pengaduan;
             });
@@ -122,6 +122,38 @@ class DashboardMasyarakatController extends Controller
             'info_umum',
             'grafik_data'
         ));
+    }
+
+    /**
+     * Helper method untuk menghitung jumlah file dengan aman
+     */
+    private function getFileCount($files)
+    {
+        try {
+            // Jika files null atau empty
+            if (empty($files)) {
+                return 0;
+            }
+            
+            // Jika files sudah berupa array
+            if (is_array($files)) {
+                return count($files);
+            }
+            
+            // Jika files berupa string JSON
+            if (is_string($files)) {
+                $decoded = json_decode($files, true);
+                if (is_array($decoded)) {
+                    return count($decoded);
+                }
+            }
+            
+            // Default return 0
+            return 0;
+        } catch (\Exception $e) {
+            // Jika ada error parsing, return 0
+            return 0;
+        }
     }
 
     /**

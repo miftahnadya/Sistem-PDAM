@@ -44,15 +44,18 @@
             box-shadow: 0 0 0 3px rgba(83, 205, 226, 0.1);
             outline: none;
         }
-        .form-input:valid {
+        .form-input.valid {
             border-color: #10b981;
+        }
+        .form-input.invalid {
+            border-color: #ef4444;
         }
         
         .btn-primary {
             background: linear-gradient(135deg, #005792, #53CDE2);
             transition: all 0.3s ease;
         }
-        .btn-primary:hover {
+        .btn-primary:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(0, 87, 146, 0.3);
         }
@@ -111,6 +114,42 @@
                 </div>
             </div>
         </header>
+
+        <!-- Error Alert -->
+        @if($errors->any())
+        <div class="max-w-4xl mx-auto p-6">
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-lg animate-fade-in">
+                <div class="flex">
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-red-800">Terdapat kesalahan pada form:</h3>
+                        <div class="mt-2 text-sm text-red-700">
+                            <ul class="list-disc pl-5 space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Success Alert -->
+        @if(session('success'))
+        <div class="max-w-4xl mx-auto p-6">
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-lg animate-fade-in">
+                <div class="flex">
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-green-800">{{ session('success') }}</h3>
+                        @if(session('ticket_number'))
+                        <p class="text-sm text-green-700 mt-1">Nomor Tiket: <strong>{{ session('ticket_number') }}</strong></p>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
 
         <!-- Main Content -->
         <main class="max-w-4xl mx-auto p-6">
@@ -186,17 +225,17 @@
                                     @enderror
                                 </div>
 
-                                <!-- Kategori -->
+                                <!-- Kategori (Icons removed) -->
                                 <div>
                                     <label class="block text-sm font-semibold mb-2 text-gray-700">Kategori Masalah</label>
                                     <select name="kategori" class="form-input w-full rounded-xl px-4 py-3 text-gray-900" required>
                                         <option value="">Pilih kategori</option>
-                                        <option value="kualitas_air" {{ old('kategori') == 'kualitas_air' ? 'selected' : '' }}>🚰 Kualitas Air</option>
-                                        <option value="ketersediaan_air" {{ old('kategori') == 'ketersediaan_air' ? 'selected' : '' }}>💧 Ketersediaan Air</option>
-                                        <option value="tagihan" {{ old('kategori') == 'tagihan' ? 'selected' : '' }}>💰 Tagihan</option>
-                                        <option value="pelayanan" {{ old('kategori') == 'pelayanan' ? 'selected' : '' }}>🏢 Pelayanan</option>
-                                        <option value="perbaikan" {{ old('kategori') == 'perbaikan' ? 'selected' : '' }}>🔧 Perbaikan</option>
-                                        <option value="lainnya" {{ old('kategori') == 'lainnya' ? 'selected' : '' }}>📝 Lainnya</option>
+                                        <option value="kualitas_air" {{ old('kategori') == 'kualitas_air' ? 'selected' : '' }}>Kualitas Air</option>
+                                        <option value="ketersediaan_air" {{ old('kategori') == 'ketersediaan_air' ? 'selected' : '' }}>Ketersediaan Air</option>
+                                        <option value="tagihan" {{ old('kategori') == 'tagihan' ? 'selected' : '' }}>Tagihan</option>
+                                        <option value="pelayanan" {{ old('kategori') == 'pelayanan' ? 'selected' : '' }}>Pelayanan</option>
+                                        <option value="perbaikan" {{ old('kategori') == 'perbaikan' ? 'selected' : '' }}>Perbaikan</option>
+                                        <option value="lainnya" {{ old('kategori') == 'lainnya' ? 'selected' : '' }}>Lainnya</option>
                                     </select>
                                     @error('kategori')
                                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -423,14 +462,14 @@
         const uploadText = document.getElementById('uploadText');
         const filePreview = document.getElementById('filePreview');
 
-        uploadArea.addEventListener('click', () => fileInput.click());
+        uploadArea?.addEventListener('click', () => fileInput?.click());
 
-        fileInput.addEventListener('change', function() {
+        fileInput?.addEventListener('change', function() {
             handleFiles(this.files);
         });
 
         function handleFiles(files) {
-            if (files.length === 0) return;
+            if (!files || files.length === 0) return;
 
             uploadText.textContent = `${files.length} file dipilih`;
             filePreview.innerHTML = '';
@@ -458,48 +497,55 @@
         }
 
         function removeFile(index) {
-            const dt = new DataTransfer();
-            const files = fileInput.files;
-            
-            for (let i = 0; i < files.length; i++) {
-                if (i !== index) dt.items.add(files[i]);
-            }
-            
-            fileInput.files = dt.files;
-            handleFiles(fileInput.files);
-            
-            if (fileInput.files.length === 0) {
-                uploadText.textContent = 'Klik untuk upload foto';
-                filePreview.classList.add('hidden');
+            try {
+                const dt = new DataTransfer();
+                const files = fileInput?.files;
+                
+                if (!files) return;
+                
+                for (let i = 0; i < files.length; i++) {
+                    if (i !== index) dt.items.add(files[i]);
+                }
+                
+                fileInput.files = dt.files;
+                handleFiles(fileInput.files);
+                
+                if (fileInput.files.length === 0) {
+                    uploadText.textContent = 'Klik untuk upload foto';
+                    filePreview.classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Error removing file:', error);
             }
         }
 
         // Drag & drop
-        uploadArea.addEventListener('dragover', (e) => {
+        uploadArea?.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadArea.classList.add('drag-over');
         });
 
-        uploadArea.addEventListener('dragleave', () => {
+        uploadArea?.addEventListener('dragleave', () => {
             uploadArea.classList.remove('drag-over');
         });
 
-        uploadArea.addEventListener('drop', (e) => {
+        uploadArea?.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadArea.classList.remove('drag-over');
-            fileInput.files = e.dataTransfer.files;
-            handleFiles(e.dataTransfer.files);
+            if (fileInput) {
+                fileInput.files = e.dataTransfer.files;
+                handleFiles(e.dataTransfer.files);
+            }
         });
 
-        // Form submission with AJAX
-        document.getElementById('pengaduanForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        // Form submission - Traditional submit (no AJAX)
+        document.getElementById('pengaduanForm')?.addEventListener('submit', function(e) {
             const agreement = document.querySelector('input[name="agreement"]');
-            if (!agreement.checked) {
+            if (!agreement?.checked) {
+                e.preventDefault();
                 alert('Harap centang persetujuan terlebih dahulu');
-                agreement.focus();
-                return;
+                agreement?.focus();
+                return false;
             }
 
             // Show loading state
@@ -507,89 +553,75 @@
             const submitText = document.getElementById('submitText');
             const loadingText = document.getElementById('loadingText');
             
-            submitBtn.disabled = true;
-            submitText.classList.add('hidden');
-            loadingText.classList.remove('hidden');
-
-            // Create FormData
-            const formData = new FormData(this);
-
-            // AJAX Submit
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Show success modal
-                    document.getElementById('ticketNumber').textContent = data.ticket_number;
-                    showSuccessModal();
-                    
-                    // Reset form
-                    this.reset();
-                    filePreview.classList.add('hidden');
-                    uploadText.textContent = 'Klik untuk upload foto';
-                } else {
-                    alert('Terjadi kesalahan: ' + (data.message || 'Silakan coba lagi'));
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan saat mengirim pengaduan. Silakan coba lagi.');
-            })
-            .finally(() => {
-                // Reset button state
-                submitBtn.disabled = false;
-                submitText.classList.remove('hidden');
-                loadingText.classList.add('hidden');
-            });
+            if (submitBtn && submitText && loadingText) {
+                submitBtn.disabled = true;
+                submitText.classList.add('hidden');
+                loadingText.classList.remove('hidden');
+            }
+            
+            // Let the form submit normally
+            return true;
         });
 
         // Modal functions
         function showSuccessModal() {
-            document.getElementById('successModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         function closeSuccessModal() {
-            document.getElementById('successModal').classList.add('hidden');
-            document.body.style.overflow = '';
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
             // Redirect to dashboard
             window.location.href = '{{ route("dashboardmasyarakat") }}';
         }
 
         function trackComplaint() {
-            const ticketNumber = document.getElementById('ticketNumber').textContent;
+            const ticketNumber = document.getElementById('ticketNumber')?.textContent;
             // Close modal first
-            document.getElementById('successModal').classList.add('hidden');
-            document.body.style.overflow = '';
+            const modal = document.getElementById('successModal');
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = '';
+            }
             
             // Redirect to dashboard with tracking modal
-            window.location.href = '{{ route("dashboardmasyarakat") }}?track=' + ticketNumber;
+            if (ticketNumber && ticketNumber !== '-') {
+                window.location.href = '{{ route("dashboardmasyarakat") }}?track=' + ticketNumber;
+            } else {
+                window.location.href = '{{ route("dashboardmasyarakat") }}';
+            }
         }
 
         // Real-time validation feedback
         document.querySelectorAll('.form-input').forEach(input => {
             input.addEventListener('input', function() {
-                if (this.checkValidity()) {
-                    this.classList.add('border-green-300');
-                    this.classList.remove('border-red-300');
-                } else {
-                    this.classList.add('border-red-300');
-                    this.classList.remove('border-green-300');
+                // Remove existing validation classes
+                this.classList.remove('valid', 'invalid');
+                
+                // Add appropriate class based on validity
+                if (this.value.trim() && this.checkValidity()) {
+                    this.classList.add('valid');
+                } else if (this.value.trim() && !this.checkValidity()) {
+                    this.classList.add('invalid');
                 }
             });
         });
 
-        // Check for success message from session
-        @if(session('success'))
+        // Check for success message from session and show modal
+        @if(session('success') && session('ticket_number'))
             document.addEventListener('DOMContentLoaded', function() {
-                document.getElementById('ticketNumber').textContent = '{{ session("ticket_number") }}';
-                showSuccessModal();
+                const ticketElement = document.getElementById('ticketNumber');
+                if (ticketElement) {
+                    ticketElement.textContent = '{{ session("ticket_number") }}';
+                    showSuccessModal();
+                }
             });
         @endif
     </script>
