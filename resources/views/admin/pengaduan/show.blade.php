@@ -187,22 +187,39 @@
                             </div>
 
                             <!-- Files/Attachments -->
-                            @if($pengaduan->files && count($pengaduan->files) > 0)
+                            @php
+                                $files = [];
+                                if($pengaduan->files) {
+                                    if(is_string($pengaduan->files)) {
+                                        $files = json_decode($pengaduan->files, true) ?? [];
+                                    } elseif(is_array($pengaduan->files)) {
+                                        $files = $pengaduan->files;
+                                    }
+                                }
+                            @endphp
+                            
+                            @if($files && count($files) > 0)
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
                                     <i class="fas fa-paperclip mr-1"></i>
-                                    File Lampiran ({{ count($pengaduan->files) }})
+                                    File Lampiran ({{ count($files) }})
                                 </label>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    @foreach($pengaduan->files as $index => $file)
+                                    @foreach($files as $index => $file)
                                     <div class="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                                         <div class="flex items-center justify-between">
                                             <div class="flex items-center space-x-3">
-                                                @if(in_array(strtolower(pathinfo($file['original_name'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
+                                                @php
+                                                    $fileName = is_array($file) ? $file['original_name'] : $file;
+                                                    $fileSize = is_array($file) && isset($file['size']) ? $file['size'] : 0;
+                                                    $extension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                                                @endphp
+                                                
+                                                @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
                                                 <div class="file-icon bg-green-100 rounded-lg flex items-center justify-center">
                                                     <i class="fas fa-image text-green-600"></i>
                                                 </div>
-                                                @elseif(strtolower(pathinfo($file['original_name'], PATHINFO_EXTENSION)) === 'pdf')
+                                                @elseif($extension === 'pdf')
                                                 <div class="file-icon bg-red-100 rounded-lg flex items-center justify-center">
                                                     <i class="fas fa-file-pdf text-red-600"></i>
                                                 </div>
@@ -213,16 +230,21 @@
                                                 @endif
                                                 <div>
                                                     <p class="text-sm font-medium text-gray-900 truncate max-w-40">
-                                                        {{ $file['original_name'] }}
+                                                        {{ $fileName }}
                                                     </p>
+                                                    @if($fileSize > 0)
                                                     <p class="text-xs text-gray-500">
-                                                        {{ number_format($file['size'] / 1024, 1) }} KB
+                                                        {{ number_format($fileSize / 1024, 1) }} KB
                                                     </p>
+                                                    @endif
                                                 </div>
                                             </div>
                                             <div class="flex items-center space-x-2">
-                                                @if(in_array(strtolower(pathinfo($file['original_name'], PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif']))
-                                                <button onclick="previewImage('{{ Storage::url($file['path']) }}', '{{ $file['original_name'] }}')" 
+                                                @if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
+                                                @php
+                                                    $filePath = is_array($file) ? $file['path'] : $file;
+                                                @endphp
+                                                <button onclick="previewImage('{{ Storage::url($filePath) }}', '{{ $fileName }}')" 
                                                         class="text-pdam-blue hover:text-pdam-dark transition-colors" title="Preview">
                                                     <i class="fas fa-eye"></i>
                                                 </button>
