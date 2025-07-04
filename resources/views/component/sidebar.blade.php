@@ -78,18 +78,11 @@
                     <span class="nav-text">Kelola Pengaduan</span>
                 </a>
                 
-                <a href="{{ route('isitagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('isitagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                <a href="{{ route('admin.isitagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('isitagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-file-invoice-dollar text-lg"></i>
                     </div>
                     <span class="nav-text">Kelola Tagihan</span>
-                </a>
-                
-                <a href="{{ route('admin.data-pelanggan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.data-pelanggan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-users text-lg"></i>
-                    </div>
-                    <span class="nav-text">Data Pelanggan</span>
                 </a>
                 
                 <a href="#" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200">

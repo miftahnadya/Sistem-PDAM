@@ -310,22 +310,22 @@
                                 style="animation-delay: {{ $index * 0.1 }}s">
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                        {{ str_pad($tagihan->id_pel, 5, '0', STR_PAD_LEFT) }}
+                                        {{ $tagihan->id_pel }}
                                     </span>
                                 </td>
                                 <td class="px-4 lg:px-6 py-4">
                                     <div class="text-sm font-medium text-gray-900">{{ $tagihan->nama_pelanggan }}</div>
                                     <div class="text-sm text-gray-500 lg:hidden">
-                                        {{ \Str::limit($tagihan->periode_terakhir, 10) }}
+                                        {{ $tagihan->periode_formatted }}
                                     </div>
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-center hidden lg:table-cell">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
-                                        {{ $tagihan->periode_terakhir }}
+                                        {{ $tagihan->periode_formatted }}
                                     </span>
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-center hidden lg:table-cell">
-                                    <span class="text-sm text-gray-900 font-medium">{{ number_format($tagihan->total_pemakaian_m3, 0, ',', '.') }} m³</span>
+                                    <span class="text-sm text-gray-900 font-medium">{{ number_format($tagihan->pemakaian, 0, ',', '.') }} m³</span>
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm text-gray-900 hidden md:table-cell">
                                     Rp {{ number_format($tagihan->harga_air, 0, ',', '.') }}
@@ -334,29 +334,41 @@
                                     Rp {{ number_format($tagihan->biaya_admin, 0, ',', '.') }}
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-right text-sm hidden lg:table-cell">
-                                    @if($tagihan->denda > 0)
+                                    @if($tagihan->denda_keterlambatan > 0)
                                         <span class="font-medium text-red-600">
-                                            Rp {{ number_format($tagihan->denda, 0, ',', '.') }}
+                                            Rp {{ number_format($tagihan->denda_keterlambatan, 0, ',', '.') }}
                                         </span>
                                     @else
                                         <span class="text-green-600 font-medium">Rp 0</span>
                                     @endif
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-right">
-                                    <div class="text-lg font-bold {{ $tagihan->total_tagihan > 0 ? 'text-red-600' : 'text-green-600' }}">
-                                        Rp {{ number_format($tagihan->total_tagihan, 0, ',', '.') }}
+                                    <div class="text-lg font-bold {{ $tagihan->status_bayar == 'LUNAS' ? 'text-green-600' : 'text-red-600' }}">
+                                        Rp {{ number_format($tagihan->total_dengan_denda, 0, ',', '.') }}
                                     </div>
-                                    <div class="text-xs {{ $tagihan->total_tagihan > 0 ? 'text-red-500' : 'text-green-500' }}">
+                                    <div class="text-xs {{ $tagihan->status_bayar == 'LUNAS' ? 'text-green-500' : 'text-red-500' }}">
                                         {{ $tagihan->status_pembayaran }}
                                     </div>
+                                    @if($tagihan->status_bayar != 'LUNAS')
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Jatuh Tempo: {{ $tagihan->jatuh_tempo }}
+                                    </div>
+                                    @endif
                                 </td>
                                 <td class="px-4 lg:px-6 py-4 whitespace-nowrap text-center no-print">
                                     <div class="flex justify-center space-x-1">
                                         <button onclick="showDetails({{ $index }})" 
-                                            class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs transition lg:hidden"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded text-xs transition"
                                             title="Lihat Detail">
                                             <i class="fas fa-eye"></i>
                                         </button>
+                                        @if($tagihan->status_bayar != 'LUNAS')
+                                        <button onclick="bayarTagihan('{{ $tagihan->id_tagihan }}')" 
+                                            class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded text-xs transition"
+                                            title="Bayar Tagihan">
+                                            <i class="fas fa-money-bill-wave"></i>
+                                        </button>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -370,7 +382,7 @@
                                             @if(request('periode'))
                                                 Data tagihan untuk periode yang dipilih tidak ditemukan
                                             @else
-                                                Silakan pilih periode untuk melihat tagihan Anda
+                                                Belum ada tagihan yang dibuat untuk pelanggan ini
                                             @endif
                                         </p>
                                         @if(request('periode'))
@@ -577,21 +589,35 @@
                 <div class="space-y-4">
                     <div class="bg-gray-50 p-4 rounded-lg">
                         <div class="grid grid-cols-2 gap-2 text-sm">
+                            <div class="font-medium text-gray-600">ID Tagihan:</div>
+                            <div class="font-semibold">${tagihan.id_tagihan}</div>
                             <div class="font-medium text-gray-600">ID Pelanggan:</div>
                             <div class="font-semibold">${tagihan.id_pel}</div>
                             <div class="font-medium text-gray-600">Nama:</div>
                             <div class="font-semibold">${tagihan.nama_pelanggan}</div>
                             <div class="font-medium text-gray-600">Periode:</div>
-                            <div class="font-semibold">${tagihan.periode_terakhir}</div>
+                            <div class="font-semibold">${tagihan.periode_formatted}</div>
                             <div class="font-medium text-gray-600">Status:</div>
-                            <div class="font-semibold ${tagihan.total_tagihan > 0 ? 'text-red-600' : 'text-green-600'}">${tagihan.status_pembayaran}</div>
+                            <div class="font-semibold ${tagihan.status_bayar == 'LUNAS' ? 'text-green-600' : 'text-red-600'}">${tagihan.status_pembayaran}</div>
                         </div>
                     </div>
                     
                     <div class="space-y-3">
                         <div class="flex justify-between items-center border-b pb-2">
-                            <span class="text-sm font-medium text-gray-600">Pemakaian Air:</span>
-                            <span class="font-semibold">${(tagihan.total_pemakaian_m3 || 0).toLocaleString('id-ID')} m³</span>
+                            <span class="text-sm font-medium text-gray-600">Meter Awal:</span>
+                            <span class="font-semibold">${(tagihan.meter_awal || 0).toLocaleString('id-ID')} m³</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Meter Akhir:</span>
+                            <span class="font-semibold">${(tagihan.meter_akhir || 0).toLocaleString('id-ID')} m³</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Pemakaian:</span>
+                            <span class="font-semibold">${(tagihan.pemakaian || 0).toLocaleString('id-ID')} m³</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Tarif per m³:</span>
+                            <span class="font-semibold">Rp ${(tagihan.tarif_per_m3 || 0).toLocaleString('id-ID')}</span>
                         </div>
                         <div class="flex justify-between items-center border-b pb-2">
                             <span class="text-sm font-medium text-gray-600">Harga Air:</span>
@@ -602,24 +628,40 @@
                             <span class="font-semibold">Rp ${(tagihan.biaya_admin || 0).toLocaleString('id-ID')}</span>
                         </div>
                         <div class="flex justify-between items-center border-b pb-2">
-                            <span class="text-sm font-medium text-gray-600">Denda:</span>
-                            <span class="font-semibold ${tagihan.denda > 0 ? 'text-red-600' : 'text-green-600'}">
-                                Rp ${(tagihan.denda || 0).toLocaleString('id-ID')}
+                            <span class="text-sm font-medium text-gray-600">Denda Keterlambatan:</span>
+                            <span class="font-semibold ${tagihan.denda_keterlambatan > 0 ? 'text-red-600' : 'text-green-600'}">
+                                Rp ${(tagihan.denda_keterlambatan || 0).toLocaleString('id-ID')}
                             </span>
                         </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Tanggal Tagihan:</span>
+                            <span class="font-semibold">${tagihan.tgl_tagihan_formatted}</span>
+                        </div>
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Jatuh Tempo:</span>
+                            <span class="font-semibold">${tagihan.jatuh_tempo}</span>
+                        </div>
+                        ${tagihan.keterangan ? `
+                        <div class="flex justify-between items-center border-b pb-2">
+                            <span class="text-sm font-medium text-gray-600">Keterangan:</span>
+                            <span class="font-semibold">${tagihan.keterangan}</span>
+                        </div>
+                        ` : ''}
                     </div>
                     
                     <div class="border-t pt-4">
                         <div class="flex justify-between items-center">
                             <span class="text-lg font-bold text-gray-900">Total Tagihan:</span>
-                            <span class="text-lg font-bold ${tagihan.total_tagihan > 0 ? 'text-red-600' : 'text-green-600'}">
-                                Rp ${(tagihan.total_tagihan || 0).toLocaleString('id-ID')}
+                            <span class="text-lg font-bold ${tagihan.status_bayar == 'LUNAS' ? 'text-green-600' : 'text-red-600'}">
+                                Rp ${(tagihan.total_dengan_denda || 0).toLocaleString('id-ID')}
                             </span>
                         </div>
-                        ${tagihan.jatuh_tempo ? `
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="text-sm text-gray-600">Jatuh Tempo:</span>
-                            <span class="text-sm font-medium text-gray-900">${tagihan.jatuh_tempo}</span>
+                        ${tagihan.status_bayar != 'LUNAS' ? `
+                        <div class="mt-4">
+                            <button onclick="bayarTagihan('${tagihan.id_tagihan}')" 
+                                class="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg transition">
+                                <i class="fas fa-money-bill-wave mr-2"></i>Bayar Tagihan
+                            </button>
                         </div>
                         ` : ''}
                     </div>
@@ -628,6 +670,14 @@
             
             document.getElementById('modalContent').innerHTML = content;
             document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        // Function untuk bayar tagihan
+        function bayarTagihan(idTagihan) {
+            if (confirm('Apakah Anda yakin ingin membayar tagihan ini?')) {
+                // Redirect ke halaman pembayaran atau proses pembayaran
+                window.location.href = `/bayar-tagihan/${idTagihan}`;
+            }
         }
 
         function closeModal() {

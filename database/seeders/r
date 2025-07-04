@@ -1,57 +1,36 @@
-<?php
-namespace Database\Seeders;
-
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Schema;
-use App\Models\User;
-use App\Models\Pelanggan;
-use App\Models\Tarif;
-
-class UserSeeder extends Seeder
-{
-    public function run()
-    {
-        // Disable foreign key checks
-        Schema::disableForeignKeyConstraints();
-        
-        // Clear existing data
-        DB::table('users')->truncate();
-        DB::table('pelanggan')->truncate();
-        
-        // Re-enable foreign key checks
-        Schema::enableForeignKeyConstraints();
-
-        // Debug: Periksa kolom yang ada di tabel users
-        $userColumns = Schema::getColumnListing('users');
-        echo "Kolom users yang tersedia: " . implode(', ', $userColumns) . "\n";
-        
-        // Debug: Periksa kolom yang ada di tabel pelanggan
-        $pelangganColumns = Schema::getColumnListing('pelanggan');
-        echo "Kolom pelanggan yang tersedia: " . implode(', ', $pelangganColumns) . "\n";
-        
-        // Pastikan ada tarif default
-        $defaultTarif = Tarif::first();
-        if (!$defaultTarif) {
-            $defaultTarif = Tarif::create([
-                'kategori' => 'Rumah Tangga',
-                'tarif_per_m3' => 2500,
-                'biaya_admin' => 5000,
-                'biaya_beban' => 0,
-                'status' => 'AKTIF',
-            ]);
-            echo "✓ Tarif default berhasil dibuat dengan ID: {$defaultTarif->id_tarif}\n";
-        }
-    
-          $users = [
+  $users = [
             // Admin user
+            [
+                'id_pel' => 'ADMIN',
+                'id_meter' => 'ADMIN001',
+                'nama_pelanggan' => 'Administrator',
+                'password' => Hash::make('admin123'),
+                'role' => 'admin',
+                'goltar' => null,
+                'alamat' => 'PDAM Office',
+                'desa' => null,
+                'kecamatan' => null,
+                'rute' => null,
+                'merek_meter' => null,
+                'status_pelanggan' => 'AKTIF',
+                'status_meter' => null,
+                'angka_meter_kini' => null,
+                'periode_terakhir' => null,
+                'jumlah_bulan_rekening' => null,
+                'total_pemakaian_m3' => null,
+                'harga_air' => null,
+                'biaya_admin' => null,
+                'denda' => null,
+                'total_tagihan' => null,
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
             [
                 'id_pel' => '00323',
                 'id_meter' => '00031858',
                 'nama_pelanggan' => 'FADHIL RIDWAN',
                 'password' => Hash::make('00323'),
-                'role' => 'admin',
+                'role' => 'user',
                 'goltar' => '24',
                 'alamat' => 'DUSUN MELUR',
                 'desa' => 'BUKIT RATA',
@@ -520,132 +499,5 @@ class UserSeeder extends Seeder
                 'total_tagihan' => 955600,
                 'created_at' => now(),
                 'updated_at' => now()
-            ],
-                        [
-                'id_pel' => '12345',
-                'id_meter' => '123456',
-                'nama_pelanggan' => 'ADMIN',
-                'password' => Hash::make('12345'),
-                'role' => 'admin',
-                'goltar' => null,
-                'alamat' => 'PDAM Office',
-                'desa' => null,
-                'kecamatan' => null,
-                'rute' => null,
-                'merek_meter' => null,
-                'status_pelanggan' => 'AKTIF',
-                'status_meter' => null,
-                'angka_meter_kini' => null,
-                'periode_terakhir' => null,
-                'jumlah_bulan_rekening' => null,
-                'total_pemakaian_m3' => null,
-                'harga_air' => null,
-                'biaya_admin' => null,
-                'denda' => null,
-                'total_tagihan' => null,
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
+            ]
         ];
-
-        echo "Mulai insert data users dan pelanggan...\n";
-        
-        foreach ($users as $user) {
-            try {
-                // Siapkan data user berdasarkan kolom yang tersedia
-                $userData = [];
-                
-                // Mapping kolom yang ada untuk tabel users
-                $userFieldMapping = [
-                    'name' => 'nama_pelanggan',
-                    'nama_pelanggan' => 'nama_pelanggan',
-                    'email' => function($user) {
-                        return strtolower(str_replace(' ', '', $user['nama_pelanggan'])) . '@pdam.com';
-                    },
-                    'password' => 'password',
-                    'role' => function($user) {
-                        return $user['role'] == 'admin' ? 'admin' : 'pelanggan';
-                    },
-                    'id_pel' => 'id_pel',
-                    'id_meter' => 'id_meter',
-                    'alamat' => 'alamat',
-                    'desa' => 'desa',
-                    'kecamatan' => 'kecamatan',
-                    'rute' => 'rute',
-                    'goltar' => 'goltar',
-                    'merek_meter' => 'merek_meter',
-                    'status_pelanggan' => 'status_pelanggan',
-                    'status_meter' => 'status_meter',
-                    'angka_meter_kini' => 'angka_meter_kini',
-                    'periode_terakhir' => 'periode_terakhir',
-                    'jumlah_bulan_rekening' => 'jumlah_bulan_rekening',
-                    'total_pemakaian_m3' => 'total_pemakaian_m3',
-                    'harga_air' => 'harga_air',
-                    'biaya_admin' => 'biaya_admin',
-                    'denda' => 'denda',
-                    'total_tagihan' => 'total_tagihan',
-                    'created_at' => 'created_at',
-                    'updated_at' => 'updated_at',
-                ];
-                
-                // Populate userData berdasarkan kolom yang tersedia
-                foreach ($userFieldMapping as $dbColumn => $sourceKey) {
-                    if (in_array($dbColumn, $userColumns)) {
-                        if (is_callable($sourceKey)) {
-                            $userData[$dbColumn] = $sourceKey($user);
-                        } else {
-                            $userData[$dbColumn] = $user[$sourceKey] ?? null;
-                        }
-                    }
-                }
-                
-                // Insert ke tabel users
-                $userId = DB::table('users')->insertGetId($userData);
-
-                // Jika bukan admin, buat data pelanggan
-                if ($user['role'] !== 'admin') {
-                    // Buat email unik untuk pelanggan
-                    $email = strtolower(str_replace(' ', '', $user['nama_pelanggan'])) . '@pdam.com';
-                    
-                    // Siapkan data pelanggan
-                    $pelangganData = [
-                        'id_pel' => $user['id_pel'],
-                        'nama_pelanggan' => $user['nama_pelanggan'],
-                        'alamat' => $user['alamat'] . 
-                                  ($user['desa'] ? ', ' . $user['desa'] : '') . 
-                                  ($user['kecamatan'] ? ', ' . $user['kecamatan'] : ''),
-                        'no_telepon' => '0812' . substr(str_pad($user['id_pel'], 8, '0', STR_PAD_LEFT), -8),
-                        'email' => $email,
-                        'status_pelanggan' => $user['status_pelanggan'],
-                        'role' => 'pelanggan',
-                        'tgl_daftar' => now()->subDays(rand(1, 365)),
-                        'tarif_id' => $defaultTarif->id_tarif,
-                        'created_by' => $userId,
-                        'updated_by' => $userId,
-                    ];
-                    
-                    // Insert ke tabel pelanggan
-                    Pelanggan::create($pelangganData);
-                    
-                    echo "✓ User & Pelanggan {$user['nama_pelanggan']} (ID: {$user['id_pel']}) berhasil ditambahkan\n";
-                } else {
-                    echo "✓ Admin {$user['nama_pelanggan']} berhasil ditambahkan\n";
-                }
-                
-            } catch (\Exception $e) {
-                echo "✗ Error inserting user {$user['nama_pelanggan']}: {$e->getMessage()}\n";
-            }
-        }
-        
-        echo "\n✓ UserSeeder berhasil dijalankan!\n";
-        echo "Total user: " . count($users) . "\n";
-        echo "Total pelanggan yang berhasil dibuat: " . Pelanggan::count() . "\n";
-        
-        // Tampilkan beberapa data pelanggan untuk verifikasi
-        echo "\nData pelanggan yang tersedia:\n";
-        $pelangganSample = Pelanggan::select('id_pel', 'nama_pelanggan', 'alamat')->limit(5)->get();
-        foreach ($pelangganSample as $pel) {
-            echo "- ID: {$pel->id_pel}, Nama: {$pel->nama_pelanggan}\n";
-        }
-    }
-}

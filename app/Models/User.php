@@ -39,10 +39,27 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected function casts(): array
+    protected $casts = [
+        'harga_air' => 'decimal:2',
+        'biaya_admin' => 'decimal:2',
+        'denda' => 'decimal:2',
+        'total_tagihan' => 'decimal:2',
+    ];
+
+    public function tagihan()
     {
-        return [
-            'password' => 'hashed',
-        ];
+        return $this->hasMany(Tagihan::class, 'user_id');
+    }
+
+    // Accessor untuk nama (untuk compatibility)
+    public function getNameAttribute()
+    {
+        return $this->nama_pelanggan;
+    }
+
+    // Accessor untuk email (untuk compatibility)
+    public function getEmailAttribute()
+    {
+        return $this->id_pel . '@pdam.com';
     }
 }
