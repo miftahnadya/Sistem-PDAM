@@ -19,16 +19,11 @@
             <div class="w-10 h-10 bg-[#6bb6d6] rounded-full flex items-center justify-center shadow-lg">
                 <i class="fas fa-tint text-white text-lg"></i>
             </div>
-            <div id="sidebarText">
+            <div>
                 <h3 class="text-white font-bold text-lg">PDAM</h3>
                 <p class="text-[#92CEE6] text-xs">{{ $isAdmin ? 'Admin Panel' : 'Water Management' }}</p>
             </div>
         </div>
-        
-        <!-- Desktop Toggle Button -->
-        <button id="desktopToggleBtn" class="hidden lg:block text-white hover:text-[#6bb6d6] transition-colors duration-200">
-            <i class="fas fa-angle-left text-xl" id="toggleIcon"></i>
-        </button>
         
         <!-- Mobile Close Button -->
         <button id="mobileCloseBtn" class="lg:hidden text-white hover:text-red-400 transition-colors duration-200">
@@ -44,7 +39,7 @@
             </div>
             <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-green-400 rounded-full border-2 border-white"></div>
         </div>
-        <div class="text-center" id="userInfo">
+        <div class="text-center">
             <div class="text-white font-semibold text-base">
                 {{ $user->nama_pelanggan ?? 'User' }}
             </div>
@@ -68,28 +63,21 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-chart-pie text-lg"></i>
                     </div>
-                    <span class="nav-text">Dashboard</span>
+                    <span>Dashboard</span>
                 </a>
                 
                 <a href="{{ route('admin.pengaduan.index') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-headset text-lg"></i>
                     </div>
-                    <span class="nav-text">Kelola Pengaduan</span>
+                    <span>Kelola Pengaduan</span>
                 </a>
                 
                 <a href="{{ route('admin.isitagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('isitagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-file-invoice-dollar text-lg"></i>
                     </div>
-                    <span class="nav-text">Kelola Tagihan</span>
-                </a>
-                
-                <a href="#" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-chart-bar text-lg"></i>
-                    </div>
-                    <span class="nav-text">Laporan</span>
+                    <span>Kelola Tagihan</span>
                 </a>
             @else
                 <!-- User Menu -->
@@ -97,35 +85,35 @@
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-house-chimney text-lg"></i>
                     </div>
-                    <span class="nav-text">Dashboard</span>
+                    <span>Dashboard</span>
                 </a>
                 
                 <a href="{{ route('cektagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('cektagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-file-invoice text-lg"></i>
                     </div>
-                    <span class="nav-text">Cek Tagihan</span>
+                    <span>Cek Tagihan</span>
                 </a>
                 
                 <a href="{{ route('pengaduanpelanggan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('pengaduanpelanggan') || request()->routeIs('pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-headset text-lg"></i>
                     </div>
-                    <span class="nav-text">Pengaduan</span>
+                    <span>Pengaduan</span>
                 </a>
                 
                 <button onclick="openTrackModal()" class="nav-item w-full flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-search text-lg"></i>
                     </div>
-                    <span class="nav-text">Lacak Pengaduan</span>
+                    <span>Lacak Pengaduan</span>
                 </button>
                 
                 <a href="#" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('user.profil') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
                     <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
                         <i class="fas fa-user-circle text-lg"></i>
                     </div>
-                    <span class="nav-text">Profil</span>
+                    <span>Profil</span>
                 </a>
             @endif
         </div>
@@ -139,7 +127,7 @@
                 <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20">
                     <i class="fas fa-right-from-bracket text-lg"></i>
                 </div>
-                <span class="nav-text">Logout</span>
+                <span>Logout</span>
             </button>
         </form>
     </div>
@@ -149,35 +137,35 @@
 <div id="trackModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-[#10283a] to-[#1e355e] p-6 text-white">
+        <div class="bg-gradient-to-r from-[#10283a] to-[#1e355e] p-4 sm:p-6 text-white">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-[#6bb6d6] rounded-lg flex items-center justify-center">
-                        <i class="fas fa-search text-lg"></i>
+                    <div class="w-8 h-8 sm:w-10 sm:h-10 bg-[#6bb6d6] rounded-lg flex items-center justify-center">
+                        <i class="fas fa-search text-sm sm:text-lg"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold">Lacak Pengaduan</h3>
-                        <p class="text-[#92CEE6] text-sm">Masukkan nomor tiket untuk melacak status pengaduan</p>
+                        <h3 class="text-lg sm:text-xl font-bold">Lacak Pengaduan</h3>
+                        <p class="text-[#92CEE6] text-xs sm:text-sm">Masukkan nomor tiket untuk melacak status pengaduan</p>
                     </div>
                 </div>
                 <button onclick="closeTrackModal()" class="text-white hover:text-red-400 transition-colors">
-                    <i class="fas fa-times text-xl"></i>
+                    <i class="fas fa-times text-lg sm:text-xl"></i>
                 </button>
             </div>
         </div>
 
         <!-- Modal Body -->
-        <div class="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div class="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
             <!-- Search Form -->
             <form id="trackForm" class="mb-6">
                 <div class="relative">
                     <input type="text" 
                            id="trackTicketNumber" 
                            placeholder="Contoh: PDAM20250101001"
-                           class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 focus:outline-none focus:border-[#6bb6d6] focus:ring-2 focus:ring-[#6bb6d6]/20 transition-all">
+                           class="w-full border-2 border-gray-200 rounded-xl px-4 py-3 pr-12 text-sm sm:text-base focus:outline-none focus:border-[#6bb6d6] focus:ring-2 focus:ring-[#6bb6d6]/20 transition-all">
                     <button type="submit" 
-                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#6bb6d6] text-white px-4 py-2 rounded-lg hover:bg-[#5090b3] transition-colors">
-                        <i class="fas fa-search"></i>
+                            class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#6bb6d6] text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-[#5090b3] transition-colors">
+                        <i class="fas fa-search text-sm"></i>
                     </button>
                 </div>
             </form>
@@ -185,8 +173,8 @@
             <!-- Loading State -->
             <div id="trackLoading" class="hidden text-center py-8">
                 <div class="inline-flex items-center space-x-2 text-[#6bb6d6]">
-                    <i class="fas fa-spinner fa-spin text-2xl"></i>
-                    <span class="text-lg font-medium">Mencari pengaduan...</span>
+                    <i class="fas fa-spinner fa-spin text-xl sm:text-2xl"></i>
+                    <span class="text-base sm:text-lg font-medium">Mencari pengaduan...</span>
                 </div>
             </div>
 
@@ -196,23 +184,23 @@
             </div>
 
             <!-- Empty State -->
-            <div id="trackEmpty" class="text-center py-12">
-                <div class="w-20 h-20 bg-gray-100 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                    <i class="fas fa-search text-gray-400 text-2xl"></i>
+            <div id="trackEmpty" class="text-center py-8 sm:py-12">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <i class="fas fa-search text-gray-400 text-xl sm:text-2xl"></i>
                 </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-2">Masukkan Nomor Tiket</h4>
-                <p class="text-gray-600 max-w-md mx-auto">
+                <h4 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">Masukkan Nomor Tiket</h4>
+                <p class="text-sm sm:text-base text-gray-600 max-w-md mx-auto px-4">
                     Masukkan nomor tiket pengaduan untuk melihat status dan detail pengaduan Anda.
                 </p>
             </div>
 
             <!-- Error State -->
             <div id="trackError" class="hidden text-center py-8">
-                <div class="w-20 h-20 bg-red-100 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-red-100 rounded-2xl mx-auto mb-4 flex items-center justify-center">
+                    <i class="fas fa-exclamation-triangle text-red-500 text-xl sm:text-2xl"></i>
                 </div>
-                <h4 class="text-lg font-semibold text-gray-900 mb-2">Pengaduan Tidak Ditemukan</h4>
-                <p class="text-gray-600 max-w-md mx-auto mb-4">
+                <h4 class="text-base sm:text-lg font-semibold text-gray-900 mb-2">Pengaduan Tidak Ditemukan</h4>
+                <p class="text-sm sm:text-base text-gray-600 max-w-md mx-auto mb-4 px-4">
                     Nomor tiket yang Anda masukkan tidak ditemukan. Pastikan nomor tiket sudah benar.
                 </p>
                 <button onclick="resetTrackModal()" class="text-[#6bb6d6] hover:text-[#5090b3] font-medium">
@@ -229,13 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('sidebarOverlay');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const mobileCloseBtn = document.getElementById('mobileCloseBtn');
-    const desktopToggleBtn = document.getElementById('desktopToggleBtn');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const sidebarText = document.getElementById('sidebarText');
-    const userInfo = document.getElementById('userInfo');
-    const navTexts = document.querySelectorAll('.nav-text');
-    
-    let isCollapsed = false;
     
     // Mobile menu toggle
     if (mobileMenuBtn) {
@@ -263,54 +244,36 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.addEventListener('click', closeMobileSidebar);
     }
     
-    // Desktop toggle
-    if (desktopToggleBtn) {
-        desktopToggleBtn.addEventListener('click', function() {
-            isCollapsed = !isCollapsed;
-            
-            if (isCollapsed) {
-                sidebar.style.width = '5rem';
-                sidebarText.style.display = 'none';
-                userInfo.style.display = 'none';
-                navTexts.forEach(text => text.style.display = 'none');
-                toggleIcon.classList.remove('fa-angle-left');
-                toggleIcon.classList.add('fa-angle-right');
-            } else {
-                sidebar.style.width = '18rem';
-                sidebarText.style.display = 'block';
-                userInfo.style.display = 'block';
-                navTexts.forEach(text => text.style.display = 'block');
-                toggleIcon.classList.remove('fa-angle-right');
-                toggleIcon.classList.add('fa-angle-left');
-            }
-            
-            localStorage.setItem('sidebarCollapsed', isCollapsed);
-        });
-    }
-    
-    // Load saved state
-    const savedState = localStorage.getItem('sidebarCollapsed');
-    if (savedState === 'true' && window.innerWidth >= 1024) {
-        desktopToggleBtn?.click();
-    }
-    
     // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth >= 1024) {
+            // Desktop: Always show sidebar
             sidebar.classList.remove('-translate-x-full');
             sidebar.classList.add('translate-x-0');
             overlay.classList.add('hidden');
             document.body.style.overflow = '';
         } else {
+            // Mobile: Hide sidebar by default
             if (!sidebar.classList.contains('translate-x-0')) {
                 sidebar.classList.add('-translate-x-full');
             }
-            if (isCollapsed) {
-                sidebar.style.width = '18rem';
-                sidebarText.style.display = 'block';
-                userInfo.style.display = 'block';
-                navTexts.forEach(text => text.style.display = 'block');
+        }
+    });
+    
+    // Close mobile sidebar when clicking on nav items
+    const navItems = document.querySelectorAll('.nav-item');
+    navItems.forEach(item => {
+        item.addEventListener('click', function() {
+            if (window.innerWidth < 1024) {
+                closeMobileSidebar();
             }
+        });
+    });
+    
+    // Close mobile sidebar on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && window.innerWidth < 1024) {
+            closeMobileSidebar();
         }
     });
 });
@@ -401,25 +364,25 @@ function displayTrackResult(pengaduan) {
     const prioritasClass = getPriorityClass(pengaduan.prioritas);
     
     resultContainer.innerHTML = `
-        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 mb-6">
-            <div class="flex items-center justify-between mb-4">
+        <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-4 sm:p-6 mb-4 sm:mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 space-y-2 sm:space-y-0">
                 <div>
-                    <h3 class="text-2xl font-bold text-gray-900">${pengaduan.ticket_number}</h3>
-                    <p class="text-gray-600">${pengaduan.judul}</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-gray-900">${pengaduan.ticket_number}</h3>
+                    <p class="text-sm sm:text-base text-gray-600">${pengaduan.judul}</p>
                 </div>
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusClass}">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusClass} self-start">
                     ${pengaduan.status.charAt(0).toUpperCase() + pengaduan.status.slice(1)}
                 </span>
             </div>
             
-            <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                     <span class="text-gray-500">Tanggal:</span>
-                    <span class="font-medium">${new Date(pengaduan.created_at).toLocaleDateString('id-ID')}</span>
+                    <span class="font-medium ml-2">${new Date(pengaduan.created_at).toLocaleDateString('id-ID')}</span>
                 </div>
                 <div>
                     <span class="text-gray-500">Kategori:</span>
-                    <span class="font-medium">${pengaduan.kategori.replace(/_/g, ' ')}</span>
+                    <span class="font-medium ml-2">${pengaduan.kategori.replace(/_/g, ' ')}</span>
                 </div>
             </div>
         </div>
@@ -427,7 +390,7 @@ function displayTrackResult(pengaduan) {
         <div class="space-y-4">
             <div class="bg-white border border-gray-200 rounded-xl p-4">
                 <h4 class="font-semibold text-gray-900 mb-2">Detail Pengaduan</h4>
-                <p class="text-gray-700">${pengaduan.detail_pengaduan}</p>
+                <p class="text-sm sm:text-base text-gray-700">${pengaduan.detail_pengaduan}</p>
             </div>
             
             ${pengaduan.response_admin ? `
@@ -436,7 +399,7 @@ function displayTrackResult(pengaduan) {
                         <i class="fas fa-user-shield mr-2"></i>
                         Respon Admin
                     </h4>
-                    <p class="text-blue-800">${pengaduan.response_admin}</p>
+                    <p class="text-sm sm:text-base text-blue-800">${pengaduan.response_admin}</p>
                     ${pengaduan.tanggal_response ? `
                         <p class="text-xs text-blue-600 mt-2">
                             Direspon pada: ${new Date(pengaduan.tanggal_response).toLocaleDateString('id-ID')}
@@ -449,7 +412,7 @@ function displayTrackResult(pengaduan) {
                 <h4 class="font-semibold text-gray-900 mb-3">Timeline</h4>
                 <div class="space-y-3">
                     <div class="flex items-center space-x-3">
-                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <div class="w-3 h-3 bg-blue-500 rounded-full flex-shrink-0"></div>
                         <div>
                             <p class="text-sm font-medium">Pengaduan Dibuat</p>
                             <p class="text-xs text-gray-500">${new Date(pengaduan.created_at).toLocaleDateString('id-ID')}</p>
@@ -458,7 +421,7 @@ function displayTrackResult(pengaduan) {
                     
                     ${pengaduan.status !== 'pending' ? `
                         <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-yellow-500 rounded-full flex-shrink-0"></div>
                             <div>
                                 <p class="text-sm font-medium">Status: ${pengaduan.status}</p>
                                 <p class="text-xs text-gray-500">${new Date(pengaduan.updated_at).toLocaleDateString('id-ID')}</p>
@@ -468,7 +431,7 @@ function displayTrackResult(pengaduan) {
                     
                     ${pengaduan.tanggal_response ? `
                         <div class="flex items-center space-x-3">
-                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <div class="w-3 h-3 bg-green-500 rounded-full flex-shrink-0"></div>
                             <div>
                                 <p class="text-sm font-medium">Admin Merespon</p>
                                 <p class="text-xs text-gray-500">${new Date(pengaduan.tanggal_response).toLocaleDateString('id-ID')}</p>
