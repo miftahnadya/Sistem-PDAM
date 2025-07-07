@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/success/{ticketNumber}', [PengaduanController::class, 'success'])->name('pengaduan.success');
         Route::get('/track', [PengaduanController::class, 'track'])->name('pengaduan.track');
         Route::post('/track-result', [PengaduanController::class, 'trackResult'])->name('pengaduan.track.result');
+        Route::put('/{id}/status', [PengaduanController::class, 'updateStatus'])->name('pengaduan.update-status');
     });
 });
 
