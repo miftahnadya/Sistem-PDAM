@@ -117,7 +117,7 @@ class UserSeeder extends Seeder
                 'harga_air' => 384100,
                 'biaya_admin' => 280000,
                 'denda' => 135000,
-                'total_tagihan' => 799180,
+                'total_tagihan' => 00000,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
