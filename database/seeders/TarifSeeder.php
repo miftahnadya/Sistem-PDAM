@@ -18,25 +18,25 @@ class TarifSeeder extends Seeder
         $tarifData = [
             [
                 'kategori' => 'Rumah Tangga',
-                'tarif_per_m3' => 2000,
+                'tarif_per_m3' => 10000,
                 'biaya_admin' => 5000,
                 'biaya_beban' => 0,
             ],
             [
                 'kategori' => 'Komersial',
-                'tarif_per_m3' => 3000,
+                'tarif_per_m3' => 10000,
                 'biaya_admin' => 7500,
                 'biaya_beban' => 2000,
             ],
             [
                 'kategori' => 'Industri',
-                'tarif_per_m3' => 4000,
+                'tarif_per_m3' => 10000,
                 'biaya_admin' => 10000,
                 'biaya_beban' => 5000,
             ],
             [
                 'kategori' => 'Sosial',
-                'tarif_per_m3' => 1500,
+                'tarif_per_m3' => 10000,
                 'biaya_admin' => 3000,
                 'biaya_beban' => 0,
             ],

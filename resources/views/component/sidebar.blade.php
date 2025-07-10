@@ -4,15 +4,15 @@
 @endphp
 
 <!-- Mobile Menu Button -->
-<button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-50 bg-[#10283a] text-white p-3 rounded-lg shadow-lg hover:bg-[#1e355e] transition-all duration-300">
+<button id="mobileMenuBtn" class="lg:hidden fixed top-4 left-4 z-[60] bg-[#10283a] text-white p-3 rounded-lg shadow-lg hover:bg-[#1e355e] transition-all duration-300">
     <i class="fas fa-bars text-lg"></i>
 </button>
 
 <!-- Sidebar Overlay for Mobile -->
-<div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+<div id="sidebarOverlay" class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-[40] hidden transition-opacity duration-300"></div>
 
 <!-- Sidebar -->
-<aside id="sidebar" class="fixed top-0 left-0 w-72 bg-gradient-to-b from-[#10283a] to-[#1e355e] h-full flex flex-col shadow-2xl z-30 transition-transform duration-300 ease-in-out transform -translate-x-full lg:translate-x-0">
+<aside id="sidebar" class="fixed top-0 left-0 w-72 bg-gradient-to-b from-[#10283a] to-[#1e355e] h-full flex flex-col shadow-2xl z-[50] transition-transform duration-300 ease-in-out transform -translate-x-full lg:translate-x-0">
     <!-- Sidebar Header -->
     <div class="flex items-center justify-between p-6 border-b border-[#2a4a6b]">
         <div class="flex items-center space-x-3">
@@ -26,7 +26,7 @@
         </div>
         
         <!-- Mobile Close Button -->
-        <button id="mobileCloseBtn" class="lg:hidden text-white hover:text-red-400 transition-colors duration-200">
+        <button id="mobileCloseBtn" class="lg:hidden text-white hover:text-red-400 transition-colors duration-200 p-2 rounded-lg hover:bg-red-500/20">
             <i class="fas fa-times text-xl"></i>
         </button>
     </div>
@@ -59,62 +59,69 @@
         <div class="space-y-2">
             @if($isAdmin)
                 <!-- Admin Menu -->
-                <a href="{{ route('admin.dashboard') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-chart-pie text-lg"></i>
+                <a href="{{ route('admin.dashboard') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.dashboard') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-chart-pie text-lg"></i>
+                        </div>
+                        <span>Dashboard</span>
                     </div>
-                    <span>Dashboard</span>
                 </a>
                 
-                <a href="{{ route('admin.pengaduan.index') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-headset text-lg"></i>
+                <a href="{{ route('admin.pengaduan.index') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('admin.pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-headset text-lg"></i>
+                        </div>
+                        <span>Kelola Pengaduan</span>
                     </div>
-                    <span>Kelola Pengaduan</span>
                 </a>
                 
-                <a href="{{ route('admin.isitagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('isitagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-file-invoice-dollar text-lg"></i>
+                <a href="{{ route('admin.isitagihan') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('isitagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-file-invoice-dollar text-lg"></i>
+                        </div>
+                        <span>Kelola Tagihan</span>
                     </div>
-                    <span>Kelola Tagihan</span>
                 </a>
             @else
                 <!-- User Menu -->
-                <a href="{{ route('dashboardmasyarakat') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('dashboardmasyarakat') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-house-chimney text-lg"></i>
+                <a href="{{ route('dashboardmasyarakat') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('dashboardmasyarakat') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-house-chimney text-lg"></i>
+                        </div>
+                        <span>Dashboard</span>
                     </div>
-                    <span>Dashboard</span>
                 </a>
                 
-                <a href="{{ route('cektagihan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('cektagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-file-invoice text-lg"></i>
+                <a href="{{ route('cektagihan') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('cektagihan') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-file-invoice text-lg"></i>
+                        </div>
+                        <span>Cek Tagihan</span>
                     </div>
-                    <span>Cek Tagihan</span>
                 </a>
                 
-                <a href="{{ route('pengaduanpelanggan') }}" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('pengaduanpelanggan') || request()->routeIs('pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-headset text-lg"></i>
+                <a href="{{ route('pengaduanpelanggan') }}" class="nav-item block w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('pengaduanpelanggan') || request()->routeIs('pengaduan.*') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-headset text-lg"></i>
+                        </div>
+                        <span>Pengaduan</span>
                     </div>
-                    <span>Pengaduan</span>
                 </a>
                 
-                <button onclick="openTrackModal()" class="nav-item w-full flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-search text-lg"></i>
+                <button onclick="openTrackModal()" class="nav-item w-full text-left p-0 border-0 bg-transparent">
+                    <div class="flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200">
+                        <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
+                            <i class="fas fa-search text-lg"></i>
+                        </div>
+                        <span>Lacak Pengaduan</span>
                     </div>
-                    <span>Lacak Pengaduan</span>
                 </button>
-                
-                <a href="#" class="nav-item flex items-center gap-4 text-white font-medium px-4 py-3 rounded-xl hover:bg-[#2a4a6b] hover:text-[#6bb6d6] transition-all duration-200 {{ request()->routeIs('user.profil') ? 'bg-[#2a4a6b] text-[#6bb6d6] border-r-4 border-[#6bb6d6]' : '' }}">
-                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-[#2a4a6b]">
-                        <i class="fas fa-user-circle text-lg"></i>
-                    </div>
-                    <span>Profil</span>
-                </a>
             @endif
         </div>
     </nav>
@@ -123,18 +130,20 @@
     <div class="p-4 border-t border-[#2a4a6b]">
         <form method="POST" action="{{ route('logout') }}">
             @csrf
-            <button type="submit" class="w-full flex items-center gap-4 text-red-400 font-medium px-4 py-3 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200">
-                <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20">
-                    <i class="fas fa-right-from-bracket text-lg"></i>
+            <button type="submit" class="w-full text-left p-0 border-0 bg-transparent">
+                <div class="flex items-center gap-4 text-red-400 font-medium px-4 py-3 rounded-xl hover:bg-red-500 hover:text-white transition-all duration-200">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-lg bg-red-500/20">
+                        <i class="fas fa-right-from-bracket text-lg"></i>
+                    </div>
+                    <span>Logout</span>
                 </div>
-                <span>Logout</span>
             </button>
         </form>
     </div>
 </aside>
 
 <!-- Modal Lacak Pengaduan -->
-<div id="trackModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+<div id="trackModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-[70] flex items-center justify-center p-4">
     <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden">
         <!-- Modal Header -->
         <div class="bg-gradient-to-r from-[#10283a] to-[#1e355e] p-4 sm:p-6 text-white">
@@ -148,7 +157,7 @@
                         <p class="text-[#92CEE6] text-xs sm:text-sm">Masukkan nomor tiket untuk melacak status pengaduan</p>
                     </div>
                 </div>
-                <button onclick="closeTrackModal()" class="text-white hover:text-red-400 transition-colors">
+                <button onclick="closeTrackModal()" class="text-white hover:text-red-400 transition-colors p-2 rounded-lg hover:bg-red-500/20">
                     <i class="fas fa-times text-lg sm:text-xl"></i>
                 </button>
             </div>
@@ -220,28 +229,45 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Mobile menu toggle
     if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', function() {
-            sidebar.classList.remove('-translate-x-full');
-            sidebar.classList.add('translate-x-0');
-            overlay.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log('Menu button clicked'); // Debug log
+            openMobileSidebar();
         });
     }
     
     // Mobile close
     function closeMobileSidebar() {
+        console.log('Closing sidebar'); // Debug log
         sidebar.classList.remove('translate-x-0');
         sidebar.classList.add('-translate-x-full');
         overlay.classList.add('hidden');
         document.body.style.overflow = '';
     }
     
+    function openMobileSidebar() {
+        console.log('Opening sidebar'); // Debug log
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        overlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+    
     if (mobileCloseBtn) {
-        mobileCloseBtn.addEventListener('click', closeMobileSidebar);
+        mobileCloseBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMobileSidebar();
+        });
     }
     
     if (overlay) {
-        overlay.addEventListener('click', closeMobileSidebar);
+        overlay.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeMobileSidebar();
+        });
     }
     
     // Handle window resize
@@ -260,12 +286,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Close mobile sidebar when clicking on nav items
-    const navItems = document.querySelectorAll('.nav-item');
+    // Close mobile sidebar when clicking on nav items (only for actual links)
+    const navItems = document.querySelectorAll('.nav-item a, .nav-item[href]');
     navItems.forEach(item => {
         item.addEventListener('click', function() {
             if (window.innerWidth < 1024) {
-                closeMobileSidebar();
+                setTimeout(() => {
+                    closeMobileSidebar();
+                }, 100);
             }
         });
     });
@@ -275,6 +303,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (e.key === 'Escape' && window.innerWidth < 1024) {
             closeMobileSidebar();
         }
+    });
+    
+    // Prevent clicks inside sidebar from closing it
+    sidebar.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
+    
+    // Debug: Check if elements exist
+    console.log('Sidebar elements:', {
+        sidebar: !!sidebar,
+        overlay: !!overlay,
+        mobileMenuBtn: !!mobileMenuBtn,
+        mobileCloseBtn: !!mobileCloseBtn
     });
 });
 

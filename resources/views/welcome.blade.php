@@ -244,47 +244,7 @@
             </div>
         </div>
     </section>
-
-    <!-- Statistik Section -->
-    <section class="w-full bg-[#0F2538] py-16 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-12 fade-in">
-                <h2 class="text-4xl font-bold text-white mb-4">Statistik Pelayanan</h2>
-                <p class="text-blue-200 text-lg">Data pencapaian kami dalam melayani masyarakat</p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="text-center fade-in">
-                    <div class="bg-[#92CEE6] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-users text-[#0F2538] text-2xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-white mb-2" data-count="5000">0</div>
-                    <div class="text-blue-200">Pelanggan Aktif</div>
-                </div>
-                <div class="text-center fade-in">
-                    <div class="bg-[#92CEE6] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-map-marker-alt text-[#0F2538] text-2xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-white mb-2" data-count="25">0</div>
-                    <div class="text-blue-200">Wilayah Layanan</div>
-                </div>
-                <div class="text-center fade-in">
-                    <div class="bg-[#92CEE6] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-clock text-[#0F2538] text-2xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-white mb-2" data-count="24">0</div>
-                    <div class="text-blue-200">Jam Layanan</div>
-                </div>
-                <div class="text-center fade-in">
-                    <div class="bg-[#92CEE6] rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-award text-[#0F2538] text-2xl"></i>
-                    </div>
-                    <div class="text-3xl font-bold text-white mb-2" data-count="99">0</div>
-                    <div class="text-blue-200">% Kepuasan</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    
     <!-- Informasi & Berita Section -->
     <section id="artikel" class="w-full bg-white py-16 px-6 scroll-mt-24">
         <div class="max-w-6xl mx-auto">

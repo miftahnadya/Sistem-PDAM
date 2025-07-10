@@ -91,6 +91,31 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Responsive overrides */
+        @media (max-width: 1023px) {
+            .lg\:ml-72 { margin-left: 0 !important; }
+        }
+        @media (max-width: 767px) {
+            .max-w-4xl, .max-w-md { max-width: 100% !important; }
+            .p-6, .md\:p-8, .px-6, .md\:px-8, .py-6, .pt-8 { padding: 1rem !important; }
+            .rounded-2xl, .rounded-3xl { border-radius: 1rem !important; }
+            .text-2xl { font-size: 1.25rem !important; }
+            .text-xl { font-size: 1.1rem !important; }
+            .w-16, .h-16 { width: 3rem !important; height: 3rem !important; }
+            .w-20, .h-20 { width: 4rem !important; height: 4rem !important; }
+            .w-10, .h-10 { width: 2.25rem !important; height: 2.25rem !important; }
+            .w-8, .h-8 { width: 2rem !important; height: 2rem !important; }
+            .flex-row { flex-direction: column !important; }
+            .gap-4, .gap-3, .gap-6, .gap-8 { gap: 1rem !important; }
+        }
+        @media (max-width: 640px) {
+            .sm\:flex-row { flex-direction: column !important; }
+            .sm\:inline { display: none !important; }
+            .sm\:block { display: block !important; }
+            .sm\:hidden { display: none !important; }
+            .sm\:px-6 { padding-left: 1rem !important; padding-right: 1rem !important; }
+        }
     </style>
 </head>
 
@@ -101,8 +126,8 @@
         <!-- Header -->
         <header class="bg-gradient-to-r from-pdam-dark to-pdam-blue text-white p-6 shadow-lg">
             <div class="max-w-4xl mx-auto">
-                <div class="flex items-center justify-between">
-                    <div class="animate-fade-in">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div class="animate-fade-in text-center md:text-left w-full">
                         <h1 class="text-2xl md:text-3xl font-bold mb-2">Form Pengaduan</h1>
                         <p class="text-pdam-light">Sampaikan keluhan Anda, kami siap membantu</p>
                     </div>
@@ -155,17 +180,17 @@
         <main class="max-w-4xl mx-auto p-6">
             <!-- Progress Steps -->
             <div class="step-indicator rounded-2xl p-4 mb-6 animate-fade-in">
-                <div class="flex items-center justify-center space-x-8">
+                <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-8">
                     <div class="flex items-center space-x-2">
                         <div class="w-8 h-8 bg-pdam-blue text-white rounded-full flex items-center justify-center text-sm font-bold">1</div>
                         <span class="text-pdam-dark font-medium">Isi Data</span>
                     </div>
-                    <div class="w-12 h-0.5 bg-pdam-light"></div>
+                    <div class="w-12 h-0.5 bg-pdam-light hidden sm:block"></div>
                     <div class="flex items-center space-x-2">
                         <div class="w-8 h-8 bg-pdam-light text-pdam-dark rounded-full flex items-center justify-center text-sm font-bold">2</div>
                         <span class="text-gray-500">Kirim</span>
                     </div>
-                    <div class="w-12 h-0.5 bg-pdam-light"></div>
+                    <div class="w-12 h-0.5 bg-pdam-light hidden sm:block"></div>
                     <div class="flex items-center space-x-2">
                         <div class="w-8 h-8 bg-pdam-light text-pdam-dark rounded-full flex items-center justify-center text-sm font-bold">3</div>
                         <span class="text-gray-500">Selesai</span>
@@ -225,7 +250,7 @@
                                     @enderror
                                 </div>
 
-                                <!-- Kategori (Icons removed) -->
+                                <!-- Kategori -->
                                 <div>
                                     <label class="block text-sm font-semibold mb-2 text-gray-700">Kategori Masalah</label>
                                     <select name="kategori" class="form-input w-full rounded-xl px-4 py-3 text-gray-900" required>
@@ -350,33 +375,6 @@
                         </div>
                     </div>
                 </form>
-            </div>
-
-            <!-- Quick Info -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8 animate-fade-in">
-                <div class="bg-white rounded-2xl p-6 shadow-lg border border-pdam-light/30">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-clock text-green-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900">Respon Cepat</h4>
-                            <p class="text-sm text-gray-600">Pengaduan diproses dalam 1×24 jam</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-6 shadow-lg border border-pdam-light/30">
-                    <div class="flex items-center space-x-4">
-                        <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                            <i class="fas fa-phone text-blue-600 text-xl"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-gray-900">Butuh Bantuan?</h4>
-                            <p class="text-sm text-gray-600">Call Center: (021) 123-4567</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </main>
     </div>

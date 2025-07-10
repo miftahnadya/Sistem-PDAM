@@ -179,27 +179,26 @@
 </nav>
 
 <style>
-/* Modern Navbar Styles with Custom Color Palette */
 #navbar {
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    transform: translateY(0);
+    transition: transform 0.3s ease-in-out;
 }
-
-/* Active link styles */
+#navbar.navbar-hidden {
+    transform: translateY(-100%);
+}
 .nav-link.active {
     background: linear-gradient(135deg, rgba(0, 87, 146, 0.3), rgba(83, 205, 226, 0.3));
     color: white !important;
     box-shadow: 0 4px 15px rgba(83, 205, 226, 0.2);
 }
-
 .mobile-nav-link.active {
     background: linear-gradient(135deg, rgba(0, 87, 146, 0.2), rgba(83, 205, 226, 0.2));
     color: white !important;
     transform: translateX(8px);
     border-left: 3px solid #53CDE2;
 }
-
-/* Glassmorphism effect */
 .nav-link::before {
     content: '';
     position: absolute;
@@ -212,46 +211,34 @@
     -webkit-mask-composite: xor;
     pointer-events: none;
 }
-
-/* Mobile menu animations */
 #mobile-menu.show {
     transform: scaleY(1);
     opacity: 1;
 }
-
-/* Navbar scroll effect */
 .navbar-scrolled {
     background: linear-gradient(135deg, rgba(0, 87, 146, 0.95), rgba(83, 205, 226, 0.95)) !important;
     backdrop-filter: blur(25px);
     border-bottom: 1px solid rgba(209, 244, 250, 0.1);
     box-shadow: 0 8px 32px rgba(0, 87, 146, 0.1);
 }
-
-/* Floating effect */
+/* Hapus efek floating agar navbar selalu menempel di atas */
 .navbar-floating {
-    margin: 10px 20px;
-    border-radius: 20px;
-    background: linear-gradient(135deg, rgba(0, 87, 146, 0.9), rgba(83, 205, 226, 0.9)) !important;
-    border: 1px solid rgba(209, 244, 250, 0.1);
-    box-shadow: 0 20px 40px rgba(0, 87, 146, 0.1);
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
 }
-
-/* Logo glow effect */
 .logo-glow {
     filter: drop-shadow(0 0 20px rgba(83, 205, 226, 0.3));
 }
-
-/* Hover animations */
 .nav-link:hover {
     transform: translateY(-1px);
     color: #D1F4FA !important;
 }
-
 .mobile-nav-link:hover {
     transform: translateX(4px);
 }
-
-/* Custom progress bar for active sections */
 .nav-link.active::after {
     content: '';
     position: absolute;
@@ -263,49 +250,36 @@
     background: linear-gradient(90deg, #53CDE2, #D1F4FA);
     border-radius: 1px;
 }
-
-/* Modern scrollbar */
 ::-webkit-scrollbar {
     width: 6px;
 }
-
 ::-webkit-scrollbar-track {
     background: rgba(237, 249, 252, 0.1);
     border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb {
     background: linear-gradient(135deg, rgba(0, 87, 146, 0.5), rgba(83, 205, 226, 0.5));
     border-radius: 3px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(135deg, rgba(0, 87, 146, 0.7), rgba(83, 205, 226, 0.7));
 }
-
-/* Loading shimmer effect */
 @keyframes shimmer {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
-
 .shimmer {
     background: linear-gradient(90deg, rgba(209, 244, 250, 0) 0%, rgba(209, 244, 250, 0.1) 50%, rgba(209, 244, 250, 0) 100%);
     background-size: 200% 100%;
     animation: shimmer 2s infinite;
 }
-
-/* Pulse effect for important elements */
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
 }
-
 .pulse-effect {
     animation: pulse 2s ease-in-out infinite;
 }
-
-/* Gradient text effect */
 .gradient-text {
     background: linear-gradient(45deg, #005792, #53CDE2, #D1F4FA);
     background-size: 200% 200%;
@@ -314,21 +288,16 @@
     background-clip: text;
     animation: gradientShift 3s ease infinite;
 }
-
 @keyframes gradientShift {
     0%, 100% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
 }
-
-/* Enhanced focus states for accessibility */
 .nav-link:focus,
 .mobile-nav-link:focus {
     outline: 2px solid #53CDE2;
     outline-offset: 2px;
     background: rgba(83, 205, 226, 0.1);
 }
-
-/* Smooth color transitions */
 * {
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -343,30 +312,27 @@ document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.getElementById('navbar');
     
     let isMenuOpen = false;
+    let lastScrollTop = 0;
+    let scrollTimeout;
+    let isScrolling = false;
     
     // Toggle mobile menu with enhanced animations
     mobileMenuButton.addEventListener('click', function() {
         isMenuOpen = !isMenuOpen;
         
         if (isMenuOpen) {
-            // Open menu
             mobileMenu.classList.add('show');
             menuIcon.style.opacity = '0';
             menuIcon.style.transform = 'rotate(180deg)';
             closeIcon.style.opacity = '1';
             closeIcon.style.transform = 'rotate(0deg)';
-            
-            // Add blur to background
             document.body.style.overflow = 'hidden';
         } else {
-            // Close menu
             mobileMenu.classList.remove('show');
             menuIcon.style.opacity = '1';
             menuIcon.style.transform = 'rotate(0deg)';
             closeIcon.style.opacity = '0';
             closeIcon.style.transform = 'rotate(-180deg)';
-            
-            // Remove blur from background
             document.body.style.overflow = '';
         }
     });
@@ -381,39 +347,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced scroll effects
-    let lastScrollTop = 0;
-    let scrollTimeout;
-    
+    // Scroll effect: hide/show navbar, NO floating
     window.addEventListener('scroll', function() {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        // Clear existing timeout
         clearTimeout(scrollTimeout);
-        
-        // Add scrolled class with delay
-        scrollTimeout = setTimeout(() => {
-            if (scrollTop > 50) {
-                navbar.classList.add('navbar-scrolled');
-                if (scrollTop > 200) {
-                    navbar.classList.add('navbar-floating');
-                }
-            } else {
-                navbar.classList.remove('navbar-scrolled', 'navbar-floating');
-            }
-        }, 50);
-        
-        // Smart hide/show navbar
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // Scrolling down
-            navbar.style.transform = 'translateY(-100%)';
+
+        // Tambahkan efek scrolled, hapus floating
+        if (scrollTop > 50) {
+            navbar.classList.add('navbar-scrolled');
+            navbar.classList.remove('navbar-floating');
         } else {
-            // Scrolling up
-            navbar.style.transform = 'translateY(0)';
+            navbar.classList.remove('navbar-scrolled', 'navbar-floating');
         }
+
+        // Hide/Show navbar logic
+        if (scrollTop > 100) {
+            if (scrollTop > lastScrollTop) {
+                navbar.classList.add('navbar-hidden');
+            } else {
+                navbar.classList.remove('navbar-hidden');
+            }
+        } else {
+            navbar.classList.remove('navbar-hidden');
+        }
+
         lastScrollTop = scrollTop;
-        
-        // Update active link
+
+        scrollTimeout = setTimeout(() => {
+            navbar.classList.remove('navbar-hidden');
+        }, 150);
+
         updateActiveLink();
     });
 
@@ -421,19 +384,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateActiveLink() {
         const sections = document.querySelectorAll('section[id]');
         const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
-        
         let currentSection = '';
         const scrollPosition = window.scrollY + 120;
-        
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.offsetHeight;
-            
             if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                 currentSection = '#' + section.id;
             }
         });
-        
         navLinks.forEach(link => {
             link.classList.remove('active');
             if (link.getAttribute('href') === currentSection) {
@@ -478,7 +437,6 @@ document.addEventListener('DOMContentLoaded', function() {
         logo.addEventListener('mouseenter', function() {
             this.classList.add('logo-glow');
         });
-        
         logo.addEventListener('mouseleave', function() {
             this.classList.remove('logo-glow');
         });
@@ -498,15 +456,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 10000);
     }
 
-    // Add pulse effect to important elements on scroll
+    // Add pulse effect to important elements on scroll (throttled)
+    let pulseTimeout;
     window.addEventListener('scroll', function() {
-        const importantElements = document.querySelectorAll('.nav-link.active');
-        importantElements.forEach(element => {
-            element.classList.add('pulse-effect');
-            setTimeout(() => {
-                element.classList.remove('pulse-effect');
-            }, 1000);
-        });
+        clearTimeout(pulseTimeout);
+        pulseTimeout = setTimeout(() => {
+            const importantElements = document.querySelectorAll('.nav-link.active');
+            importantElements.forEach(element => {
+                element.classList.add('pulse-effect');
+                setTimeout(() => {
+                    element.classList.remove('pulse-effect');
+                }, 1000);
+            });
+        }, 100);
+    });
+
+    // Show navbar when hovering near top
+    document.addEventListener('mousemove', function(e) {
+        if (e.clientY < 100) {
+            navbar.classList.remove('navbar-hidden');
+        }
     });
 });
 </script>
