@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengaduan;
+use App\Services\WhatsAppService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,12 @@ use Illuminate\Support\Facades\DB;
 
 class PengaduanController extends Controller
 {
+    protected $whatsAppService;
+
+    public function __construct(WhatsAppService $whatsAppService)
+    {
+        $this->whatsAppService = $whatsAppService;
+    }
     public function index()
     {
         return view('pengaduanpelanggan');
@@ -101,6 +108,32 @@ class PengaduanController extends Controller
 
             // Commit transaction
             DB::commit();
+
+            // Send WhatsApp notification to customer
+            try {
+                $this->whatsAppService->sendPengaduanConfirmation(
+                    $request->no_hp,
+                    $pengaduan->ticket_number,
+                    $request->nama_pelanggan
+                );
+            } catch (\Exception $e) {
+                Log::error('Failed to send WhatsApp confirmation to customer: ' . $e->getMessage());
+            }
+
+            // Send WhatsApp notification to admin (optional)
+            try {
+                $adminPhone = config('app.admin_whatsapp', null);
+                if ($adminPhone) {
+                    $this->whatsAppService->sendAdminNotification(
+                        $adminPhone,
+                        $pengaduan->ticket_number,
+                        $request->kategori,
+                        $request->nama_pelanggan
+                    );
+                }
+            } catch (\Exception $e) {
+                Log::error('Failed to send WhatsApp notification to admin: ' . $e->getMessage());
+            }
 
             if ($request->ajax()) {
                 return response()->json([
@@ -196,6 +229,55 @@ class PengaduanController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error tracking pengaduan: ' . $e->getMessage());
+            
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Update status pengaduan dengan notifikasi WhatsApp
+     */
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'status' => 'required|in:pending,in_progress,resolved,closed,rejected',
+                'notes' => 'nullable|string'
+            ]);
+
+            $pengaduan = Pengaduan::findOrFail($id);
+            
+            $oldStatus = $pengaduan->status;
+            $pengaduan->update([
+                'status' => $request->status,
+                'notes' => $request->notes,
+                'updated_at' => now()
+            ]);
+
+            // Send WhatsApp notification if status changed
+            if ($oldStatus !== $request->status) {
+                try {
+                    $this->whatsAppService->sendStatusUpdate(
+                        $pengaduan->no_hp,
+                        $pengaduan->ticket_number,
+                        $request->status,
+                        $request->notes
+                    );
+                } catch (\Exception $e) {
+                    Log::error('Failed to send WhatsApp status update: ' . $e->getMessage());
+                }
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status pengaduan berhasil diupdate'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error updating pengaduan status: ' . $e->getMessage());
             
             return response()->json([
                 'success' => false,
