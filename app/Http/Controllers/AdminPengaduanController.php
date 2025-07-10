@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pengaduan;
+use App\Services\WhatsAppService; // Tambah import ini
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log; // Tambah import ini
 
 class AdminPengaduanController extends Controller
 {
@@ -60,7 +62,7 @@ class AdminPengaduanController extends Controller
         return view('admin.pengaduan.show', compact('pengaduan'));
     }
 
-    public function updateStatus(Request $request, $id)
+  public function updateStatus(Request $request, $id)
     {
         $request->validate([
             'status' => 'required|in:pending,diproses,selesai,ditutup',
@@ -69,6 +71,10 @@ class AdminPengaduanController extends Controller
         ]);
 
         $pengaduan = Pengaduan::findOrFail($id);
+        
+        // Simpan status lama untuk logging
+        $oldStatus = $pengaduan->status;
+        
         $pengaduan->update([
             'status' => $request->status,
             'prioritas' => $request->prioritas,
@@ -77,9 +83,71 @@ class AdminPengaduanController extends Controller
             'admin_id' => auth()->id()
         ]);
 
-        return redirect()->back()->with('success', 'Status pengaduan berhasil diupdate');
-    }
+        // Kirim notifikasi WhatsApp ke pelanggan jika nomor HP tersedia
+        if (!empty($pengaduan->no_hp)) {
+            try {
+                $whatsAppService = new WhatsAppService();
+                
+                // Generate ticket number jika belum ada
+                $ticketNumber = $pengaduan->ticket_number ?? ('TK-' . str_pad($pengaduan->id, 6, '0', STR_PAD_LEFT));
+                
+                // Kirim notifikasi update status
+                $whatsAppSent = $whatsAppService->sendStatusUpdate(
+                    $pengaduan->no_hp,
+                    $ticketNumber,
+                    $request->status,
+                    $request->response_admin
+                );
 
+                if ($whatsAppSent) {
+                    Log::info('WhatsApp notification sent successfully from AdminPengaduanController', [
+                        'pengaduan_id' => $id,
+                        'phone' => $pengaduan->no_hp,
+                        'old_status' => $oldStatus,
+                        'new_status' => $request->status,
+                        'ticket' => $ticketNumber,
+                        'admin_id' => auth()->id()
+                    ]);
+                    
+                    return redirect()->back()->with('success', 'Status pengaduan berhasil diupdate dan notifikasi WhatsApp telah dikirim');
+                } else {
+                    Log::warning('WhatsApp notification failed to send from AdminPengaduanController', [
+                        'pengaduan_id' => $id,
+                        'phone' => $pengaduan->no_hp,
+                        'old_status' => $oldStatus,
+                        'new_status' => $request->status
+                    ]);
+                    
+                    return redirect()->back()->with('success', 'Status pengaduan berhasil diupdate, namun notifikasi WhatsApp gagal dikirim');
+                }
+
+            } catch (\Exception $e) {
+                // Log error tapi jangan gagalkan update status
+                Log::error('Failed to send WhatsApp notification from AdminPengaduanController', [
+                    'pengaduan_id' => $id,
+                    'phone' => $pengaduan->no_hp,
+                    'old_status' => $oldStatus,
+                    'new_status' => $request->status,
+                    'error' => $e->getMessage(),
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'admin_id' => auth()->id()
+                ]);
+                
+                return redirect()->back()->with('warning', 'Status pengaduan berhasil diupdate, namun terjadi kesalahan saat mengirim notifikasi WhatsApp');
+            }
+        } else {
+            Log::info('No phone number available for WhatsApp notification from AdminPengaduanController', [
+                'pengaduan_id' => $id,
+                'customer_name' => $pengaduan->nama_pelanggan ?? 'Unknown',
+                'old_status' => $oldStatus,
+                'new_status' => $request->status,
+                'admin_id' => auth()->id()
+            ]);
+            
+            return redirect()->back()->with('success', 'Status pengaduan berhasil diupdate (nomor HP tidak tersedia untuk notifikasi)');
+        }
+    }
     public function downloadFile($id, $fileIndex)
     {
         $pengaduan = Pengaduan::findOrFail($id);
